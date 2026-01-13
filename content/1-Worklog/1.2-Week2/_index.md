@@ -1,57 +1,55 @@
 ---
 title: "Week 2 Worklog"
 date: 2024-01-01
-weight: 1
+weight: 2
 chapter: false
 pre: " <b> 1.2. </b> "
 ---
-{{% notice warning %}} 
-⚠️ **Note:** The following information is for reference purposes only. Please **do not copy verbatim** for your own report, including this warning.
-{{% /notice %}}
-
-
 ### Week 2 Objectives:
 
-* Connect and get acquainted with members of First Cloud Journey.
-* Understand basic AWS services, how to use the console & CLI.
+* Learn AWS S3 storage service and concepts.
+* Understand S3 buckets and lifecycle policies.
+* Practice EBS volumes and snapshots.
+* Set up and manage RDS instances.
+* Understand database connectivity and operations.
+* Hands-on: Build file upload system.
 
 ### Tasks to be carried out this week:
 | Day | Task                                                                                                                                                                                                   | Start Date | Completion Date | Reference Material                        |
 | --- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ---------- | --------------- | ----------------------------------------- |
-| 2   | - Get acquainted with FCJ members <br> - Read and take note of internship unit rules and regulations                                                                                                   | 08/11/2025 | 08/11/2025      |
-| 3   | - Learn about AWS and its types of services <br>&emsp; + Compute <br>&emsp; + Storage <br>&emsp; + Networking <br>&emsp; + Database <br>&emsp; + ... <br>                                              | 08/12/2025 | 08/12/2025      | <https://cloudjourney.awsstudygroup.com/> |
-| 4   | - Create AWS Free Tier account <br> - Learn about AWS Console & AWS CLI <br> - **Practice:** <br>&emsp; + Create AWS account <br>&emsp; + Install & configure AWS CLI <br> &emsp; + How to use AWS CLI | 08/13/2025 | 08/13/2025      | <https://cloudjourney.awsstudygroup.com/> |
-| 5   | - Learn basic EC2: <br>&emsp; + Instance types <br>&emsp; + AMI <br>&emsp; + EBS <br>&emsp; + ... <br> - SSH connection methods to EC2 <br> - Learn about Elastic IP   <br>                            | 08/14/2025 | 08/15/2025      | <https://cloudjourney.awsstudygroup.com/> |
-| 6   | - **Practice:** <br>&emsp; + Launch an EC2 instance <br>&emsp; + Connect via SSH <br>&emsp; + Attach an EBS volume                                                                                     | 08/15/2025 | 08/15/2025      | <https://cloudjourney.awsstudygroup.com/> |
+| 2   | - Learn S3 fundamentals and concepts. <br> - Create S3 buckets and configure permissions. <br> - Upload/download files and manage folder structure.                                                      | 19/01/2026 | 19/01/2026      | <https://docs.aws.amazon.com/s3/latest/userguide/Welcome.html> <br> <https://docs.aws.amazon.com/s3/latest/userguide/creating-bucket.html>           |
+| 3   | - Configure S3 lifecycle policies. <br> - Set up versioning and encryption. <br> - Enable static website hosting. <br> - Learn about storage classes.                                               | 20/01/2026 | 20/01/2026      | <https://docs.aws.amazon.com/s3/latest/userguide/object-lifecycle-mgmt.html> <br> <https://docs.aws.amazon.com/s3/latest/userguide/WebsiteHosting.html> <br> <https://docs.aws.amazon.com/s3/latest/userguide/storage-class-intro.html> |
+| 4   | - Learn EBS volume types and concepts. <br> - Attach/detach EBS volumes to EC2. <br> - Create EBS snapshots. <br> - Practice volume encryption and resizing.                                                    | 21/01/2026 | 21/01/2026      | <https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/AmazonEBS.html> <br> <https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/EBSSnapshots.html> |
+| 5   | - **Practice:** RDS setup and management. <br> - Create RDS instance with MySQL/PostgreSQL. <br> - Configure security groups for database access. <br> - Connect to database and perform basic operations.                                 | 22/01/2026 | 22/01/2026      | <https://docs.aws.amazon.com/rds/latest/userguide/CHAP_GettingStarted.html> <br> <https://docs.aws.amazon.com/rds/latest/userguide/Overview.DBInstance.html> |
+| 6   | - **Hands-on Project:** Build file upload system. <br> - Create web application with file upload functionality. <br> - Integrate S3 for file storage. <br> - Use RDS for metadata storage. <br> - Deploy complete end-to-end system.                                  | 23/01/2026 | 23/01/2026      | <https://docs.aws.amazon.com/sdk-for-javascript/> <br> <https://docs.aws.amazon.com/s3/latest/userguide/PresignedUrlUploadObject.html> |
 
 
 ### Week 2 Achievements:
 
-* Understood what AWS is and mastered the basic service groups: 
-  * Compute
-  * Storage
-  * Networking 
-  * Database
-  * ...
+* **Understood AWS S3 storage service:**
+  * Created and configured S3 buckets with proper permissions.
+  * Implemented lifecycle policies for cost optimization.
+  * Set up versioning and encryption for data protection.
+  * Deployed static website hosting on S3.
+  * Understood different storage classes and their use cases.
 
-* Successfully created and configured an AWS Free Tier account.
+* **Gained expertise in EBS volume management:**
+  * Learned different EBS volume types (gp3, io2, etc.).
+  * Successfully attached and detached volumes to EC2 instances.
+  * Created and managed EBS snapshots for backup.
+  * Implemented volume encryption and resizing operations.
 
-* Became familiar with the AWS Management Console and learned how to find, access, and use services via the web interface.
+* **Successfully deployed and managed RDS database:**
+  * Created RDS instance with MySQL/PostgreSQL engine.
+  * Configured database security groups and access controls.
+  * Established database connections and performed CRUD operations.
+  * Learned RDS backup and maintenance best practices.
 
-* Installed and configured AWS CLI on the computer, including:
-  * Access Key
-  * Secret Key
-  * Default Region
-  * ...
+* **Built comprehensive file upload system:**
+  * Developed web application with file upload functionality.
+  * Integrated S3 for scalable file storage.
+  * Used RDS for storing file metadata and user information.
+  * Implemented secure file upload with presigned URLs.
+  * Created end-to-end system connecting storage and database services.
 
-* Used AWS CLI to perform basic operations such as:
-
-  * Check account & configuration information
-  * Retrieve the list of regions
-  * View EC2 service
-  * Create and manage key pairs
-  * Check information about running services
-  * ...
-
-* Acquired the ability to connect between the web interface and CLI to manage AWS resources in parallel.
-* ...
+* **Developed advanced AWS storage and database skills** including data lifecycle management, backup strategies, and service integration patterns.
