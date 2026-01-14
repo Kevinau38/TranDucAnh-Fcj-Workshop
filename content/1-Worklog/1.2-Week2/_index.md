@@ -57,6 +57,6 @@ pre: " <b> 1.2. </b> "
   * Created file listing page displaying recent uploads from database.
   * Integrated S3 for scalable file storage with metadata in RDS.
   * Successfully tested end-to-end upload with Excel file (27KB).
-  * Deployed complete system at http://13.213.9.23/upload.php.
+  * Deployed complete system.
 
 * **Developed foundational AWS storage and database skills** including data lifecycle management, backup strategies, and service integration patterns.
