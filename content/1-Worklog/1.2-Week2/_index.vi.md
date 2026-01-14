@@ -20,8 +20,8 @@ pre: " <b> 1.2. </b> "
 | 2   | - Học cơ bản và khái niệm S3. <br> - Tạo S3 buckets và cấu hình quyền. <br> - Upload/download files và quản lý cấu trúc thư mục.                                                                      | 19/01/2026   | 19/01/2026      | <https://docs.aws.amazon.com/AmazonS3/latest/userguide/Welcome.html> <br> <https://docs.aws.amazon.com/AmazonS3/latest/userguide/creating-buckets-s3.html> <br> <https://docs.aws.amazon.com/AmazonS3/latest/userguide/upload-objects.html>           |
 | 3   | - Cấu hình S3 lifecycle policies. <br> - Thiết lập versioning và encryption. <br> - Kích hoạt static website hosting. <br> - Học về các storage classes.                                               | 20/01/2026   | 20/01/2026      | <https://docs.aws.amazon.com/AmazonS3/latest/userguide/how-to-set-lifecycle-configuration-intro.html> <br> <https://docs.aws.amazon.com/AmazonS3/latest/userguide/manage-versioning-examples.html> <br> <https://docs.aws.amazon.com/AmazonS3/latest/userguide/EnableWebsiteHosting.html> <br> <https://docs.aws.amazon.com/AmazonS3/latest/userguide/storage-class-intro.html> |
 | 4   | - Học các loại EBS volume và khái niệm. <br> - Gắn/tháo EBS volumes vào EC2. <br> - Tạo EBS snapshots. <br> - Thực hành mã hóa và thay đổi kích thước volume.                                                    | 21/01/2026   | 21/01/2026      | <https://docs.aws.amazon.com/ebs/latest/userguide/ebs-volume-types.html> <br> <https://docs.aws.amazon.com/ebs/latest/userguide/ebs-detaching-volume.html> <br> <https://docs.aws.amazon.com/ebs/latest/userguide/ebs-creating-snapshot.html> <br> <https://docs.aws.amazon.com/ebs/latest/userguide/ebs-encryption.html> |
-| 5   | - **Thực hành:** Thiết lập RDS database: <br>   + Tạo RDS instance với MySQL/PostgreSQL. <br>   + Cấu hình security groups cho database access. <br>   + Kết nối database qua client tools. <br>   + Thực hiện các thao tác CRUD cơ bản.                                 | 22/01/2026   | 22/01/2026      | <https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/CHAP_SettingUp.html> |
-| 6   | - **Dự án thực hành:** Xây dựng hệ thống upload file: <br>   + Tạo ứng dụng web với chức năng upload file. <br>   + Kết nối đến RDS instance. <br>   + Tích hợp S3 buckets cho việc lưu trữ file. <br>   + Lưu trữ metadata file trong RDS database. <br>   + Triển khai upload file bảo mật với presigned URLs. <br>   + Test chức năng hệ thống end-to-end hoàn chỉnh.                                  | 23/01/2026   | 23/01/2026      | <http://13.213.9.23/upload.php> |
+| 5   | - **Thực hành:** Thiết lập RDS database: <br>   + Tạo RDS instance với MySQL 8.0 (db.t3.micro, Free Tier). <br>   + Cấu hình security groups cho database access. <br>   + Cài đặt database client (MariaDB/MySQL). <br>   + Kết nối đến RDS instance qua client tools. <br>   + Tạo database schema và tables. <br>   + Thực hiện các thao tác CRUD cơ bản.                                 | 22/01/2026   | 22/01/2026      | <https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/CHAP_SettingUp.html> |
+| 6   | - **Dự án thực hành:** Xây dựng hệ thống upload file: <br>   + Cài đặt và cấu hình PHP với các modules cần thiết. <br>   + Cấu hình IAM role cho EC2-S3 access. <br>   + Thiết lập S3 CORS policy cho web uploads. <br>   + Kết nối đến RDS instance. <br>   + Tạo database schema cho file metadata. <br>   + Phát triển upload form và handler. <br>   + Tích hợp S3 buckets cho việc lưu trữ file. <br>   + Lưu trữ metadata file trong RDS database. <br>   + Tạo trang hiển thị danh sách files. <br>   + Test chức năng hệ thống end-to-end hoàn chỉnh.                                  | 23/01/2026   | 23/01/2026      | <http://13.213.9.23/upload.php> |
 
 
 ### Kết quả đạt được tuần 2:
@@ -40,16 +40,23 @@ pre: " <b> 1.2. </b> "
   * Triển khai mã hóa volume và các thao tác thay đổi kích thước.
 
 * **Triển khai và quản lý RDS database thành công:**
-  * Tạo RDS instance với MySQL/PostgreSQL engine.
-  * Cấu hình database security groups và kiểm soát truy cập.
+  * Tạo RDS instance với MySQL 8.0.43 engine (db.t3.micro, Free Tier).
+  * Cấu hình database security groups cho EC2 access (port 3306).
+  * Cài đặt MariaDB client để tương thích với MySQL.
   * Thiết lập kết nối database và thực hiện các thao tác CRUD.
+  * Tạo database schema với bảng files (7 cột cho metadata).
   * Học các thực hành tốt nhất về RDS backup và bảo trì.
 
 * **Xây dựng hệ thống upload file toàn diện:**
-  * Phát triển ứng dụng web với chức năng upload file.
-  * Tích hợp S3 cho việc lưu trữ file có thể mở rộng.
-  * Sử dụng RDS để lưu trữ metadata file và thông tin người dùng.
-  * Triển khai upload file bảo mật với presigned URLs.
-  * Tạo hệ thống end-to-end kết nối các dịch vụ storage và database.
+  * Cài đặt và cấu hình PHP 8.4 với các modules mysqli, json, và pdo.
+  * Tạo IAM role (CloudClub-EC2-S3-Role) với S3FullAccess policy.
+  * Cấu hình S3 bucket (cloudclub-fileupload-storage-2026) ở ap-southeast-1.
+  * Thiết lập S3 CORS policy cho web uploads (GET, PUT, POST, DELETE).
+  * Phát triển ứng dụng web với upload form (upload.php).
+  * Triển khai upload handler với kiểm tra file và tích hợp S3.
+  * Tạo trang hiển thị danh sách files từ database.
+  * Tích hợp S3 cho việc lưu trữ file có thể mở rộng với metadata trong RDS.
+  * Test thành công end-to-end upload với file Excel (27KB).
+  * Triển khai hệ thống hoàn chỉnh tại http://13.213.9.23/upload.php.
 
-* **Phát triển kỹ năng AWS storage và database nâng cao** bao gồm quản lý lifecycle dữ liệu, chiến lược backup, và các mẫu tích hợp dịch vụ.
+* **Phát triển kỹ năng AWS storage và database nền tảng** bao gồm quản lý lifecycle dữ liệu, chiến lược backup, và các mẫu tích hợp dịch vụ.
