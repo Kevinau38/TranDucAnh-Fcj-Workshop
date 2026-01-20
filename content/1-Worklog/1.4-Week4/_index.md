@@ -5,53 +5,55 @@ weight: 4
 chapter: false
 pre: " <b> 1.4. </b> "
 ---
-{{% notice warning %}} 
-⚠️ **Note:** The following information is for reference purposes only. Please **do not copy verbatim** for your own report, including this warning.
-{{% /notice %}}
-
-
 ### Week 4 Objectives:
 
-* Connect and get acquainted with members of First Cloud Journey.
-* Understand basic AWS services, how to use the console & CLI.
+* Learn AWS IAM fundamentals.
+* Understand users, groups, and roles.
+* Master policies and permissions.
+* Practice MFA setup and security best practices.
+* Understand least privilege principle.
+* Hands-on: Build secure multi-user environment.
 
 ### Tasks to be carried out this week:
 | Day | Task                                                                                                                                                                                                   | Start Date | Completion Date | Reference Material                        |
 | --- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ---------- | --------------- | ----------------------------------------- |
-| 2   | - Get acquainted with FCJ members <br> - Read and take note of internship unit rules and regulations                                                                                                   | 08/11/2025 | 08/11/2025      |
-| 3   | - Learn about AWS and its types of services <br>&emsp; + Compute <br>&emsp; + Storage <br>&emsp; + Networking <br>&emsp; + Database <br>&emsp; + ... <br>                                              | 08/12/2025 | 08/12/2025      | <https://cloudjourney.awsstudygroup.com/> |
-| 4   | - Create AWS Free Tier account <br> - Learn about AWS Console & AWS CLI <br> - **Practice:** <br>&emsp; + Create AWS account <br>&emsp; + Install & configure AWS CLI <br> &emsp; + How to use AWS CLI | 08/13/2025 | 08/13/2025      | <https://cloudjourney.awsstudygroup.com/> |
-| 5   | - Learn basic EC2: <br>&emsp; + Instance types <br>&emsp; + AMI <br>&emsp; + EBS <br>&emsp; + ... <br> - SSH connection methods to EC2 <br> - Learn about Elastic IP   <br>                            | 08/14/2025 | 08/15/2025      | <https://cloudjourney.awsstudygroup.com/> |
-| 6   | - **Practice:** <br>&emsp; + Launch an EC2 instance <br>&emsp; + Connect via SSH <br>&emsp; + Attach an EBS volume                                                                                     | 08/15/2025 | 08/15/2025      | <https://cloudjourney.awsstudygroup.com/> |
+| 2   | - Learn IAM fundamentals and concepts. <br> - Understand IAM users and groups. <br> - Study authentication vs authorization. <br> - Learn about access keys and console access.                                                                      | 02/02/2026 | 02/02/2026      | <https://docs.aws.amazon.com/IAM/latest/UserGuide/introduction.html> <br> <https://docs.aws.amazon.com/IAM/latest/UserGuide/id_users.html> <br> <https://docs.aws.amazon.com/IAM/latest/UserGuide/id_groups.html> <br> <https://docs.aws.amazon.com/prescriptive-guidance/latest/modernization-net-applications-security/authentication.html> <br> <https://docs.aws.amazon.com/IAM/latest/UserGuide/id_credentials_access-keys.html>            |
+| 3   | - Learn IAM roles concepts. <br> - Understand policy types (managed vs inline). <br> - Study policy structure and syntax. <br> - Learn about trust policies.                                               | 03/02/2026 | 03/02/2026      | <https://docs.aws.amazon.com/IAM/latest/UserGuide/id_roles.html> <br> <https://docs.aws.amazon.com/IAM/latest/UserGuide/access_policies.html> <br> <https://docs.aws.amazon.com/IAM/latest/UserGuide/id_roles_create_for-custom.html> |
+| 4   | - Learn MFA (Multi-Factor Authentication). <br> - Understand password policies. <br> - Study least privilege principle. <br> - Learn about CloudTrail for auditing.                                                    | 04/02/2026 | 04/02/2026      | <https://docs.aws.amazon.com/IAM/latest/UserGuide/id_credentials_mfa.html> <br> <https://docs.aws.amazon.com/IAM/latest/UserGuide/id_credentials_passwords_account-policy.html> <br> <https://docs.aws.amazon.com/IAM/latest/UserGuide/getting-started-reduce-permissions.html> <br> <https://docs.aws.amazon.com/awscloudtrail/latest/userguide/cloudtrail-user-guide.html> |
+| 5   | - **Practice:** Create IAM infrastructure: <br>   + Create IAM users with console access. <br>   + Create IAM groups (Admin, Developer, ReadOnly). <br>   + Attach managed policies to groups. <br>   + Set up MFA for users. <br>   + Configure password policy. <br>   + Create IAM role for EC2. <br>   + Test basic access and permissions.                                 | 05/02/2026 | 05/02/2026      | <https://docs.aws.amazon.com/network-manager/latest/infrastructure-performance/identity-access-management.html> |
+| 6   | - **Hands-on Project:** Build secure multi-user environment: <br>   + Create 3 user groups with different permissions. <br>   + Create multiple IAM users and assign to groups. <br>   + Implement least privilege access. <br>   + Test user permissions and access. <br>   + Set up cross-service access using roles. <br>   + Enable CloudTrail for security auditing. <br>   + Verify security compliance.                                  | 06/02/2026 | 06/02/2026      |  |
 
 
 ### Week 4 Achievements:
 
-* Understood what AWS is and mastered the basic service groups: 
-  * Compute
-  * Storage
-  * Networking 
-  * Database
-  * ...
+* **Understood AWS IAM fundamentals:**
+  * Learned IAM architecture and components.
+  * Understood users, groups, and roles.
+  * Learned authentication vs authorization concepts.
+  * Understood access keys and console access methods.
 
-* Successfully created and configured an AWS Free Tier account.
+* **Gained expertise in IAM policies:**
+  * Understood policy types (managed vs inline).
+  * Learned policy structure and JSON syntax.
+  * Understood trust policies and assume role.
+  * Implemented policy best practices.
 
-* Became familiar with the AWS Management Console and learned how to find, access, and use services via the web interface.
+* **Successfully created IAM infrastructure:**
+  * Created IAM users with console access.
+  * Created IAM groups (Admin, Developer, ReadOnly).
+  * Attached managed policies to groups.
+  * Set up MFA for users.
+  * Configured password policy.
+  * Created IAM role for EC2.
+  * Tested basic access and permissions.
 
-* Installed and configured AWS CLI on the computer, including:
-  * Access Key
-  * Secret Key
-  * Default Region
-  * ...
+* **Built secure multi-user environment:**
+  * Created 3 user groups with different permissions.
+  * Created multiple IAM users and assigned to groups.
+  * Implemented least privilege access.
+  * Tested user permissions and access.
+  * Set up cross-service access using roles.
+  * Enabled CloudTrail for security auditing.
+  * Verified security compliance.
 
-* Used AWS CLI to perform basic operations such as:
-
-  * Check account & configuration information
-  * Retrieve the list of regions
-  * View EC2 service
-  * Create and manage key pairs
-  * Check information about running services
-  * ...
-
-* Acquired the ability to connect between the web interface and CLI to manage AWS resources in parallel.
-* ...
+* **Developed foundational AWS security skills** including identity management, access control, and security auditing.

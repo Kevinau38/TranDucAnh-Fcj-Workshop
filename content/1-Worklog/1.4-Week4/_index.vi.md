@@ -5,55 +5,55 @@ weight: 4
 chapter: false
 pre: " <b> 1.4. </b> "
 ---
-{{% notice warning %}}
-⚠️ **Lưu ý:** Các thông tin dưới đây chỉ nhằm mục đích tham khảo, vui lòng **không sao chép nguyên văn** cho bài báo cáo của bạn kể cả warning này.
-{{% /notice %}}
-
-
 ### Mục tiêu tuần 4:
 
-* Kết nối, làm quen với các thành viên trong First Cloud Journey.
-* Hiểu dịch vụ AWS cơ bản, cách dùng console & CLI.
+* Học AWS IAM fundamentals.
+* Hiểu users, groups, và roles.
+* Nắm vững policies và permissions.
+* Thực hành MFA setup và security best practices.
+* Hiểu nguyên tắc least privilege.
+* Thực hành: Xây dựng môi trường multi-user bảo mật.
 
 ### Các công việc cần triển khai trong tuần này:
-| Thứ | Công việc                                                                                                                                                                                   | Ngày bắt đầu | Ngày hoàn thành | Nguồn tài liệu                            |
+| Ngày | Công việc                                                                                                                                                                                   | Ngày bắt đầu | Ngày hoàn thành | Nguồn tài liệu                            |
 | --- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------ | --------------- | ----------------------------------------- |
-| 2   | - Làm quen với các thành viên FCJ <br> - Đọc và lưu ý các nội quy, quy định tại đơn vị thực tập                                                                                             | 11/08/2025   | 11/08/2025      |
-| 3   | - Tìm hiểu AWS và các loại dịch vụ <br>&emsp; + Compute <br>&emsp; + Storage <br>&emsp; + Networking <br>&emsp; + Database <br>&emsp; + ... <br>                                            | 12/08/2025   | 12/08/2025      | <https://cloudjourney.awsstudygroup.com/> |
-| 4   | - Tạo AWS Free Tier account <br> - Tìm hiểu AWS Console & AWS CLI <br> - **Thực hành:** <br>&emsp; + Tạo AWS account <br>&emsp; + Cài AWS CLI & cấu hình <br> &emsp; + Cách sử dụng AWS CLI | 13/08/2025   | 13/08/2025      | <https://cloudjourney.awsstudygroup.com/> |
-| 5   | - Tìm hiểu EC2 cơ bản: <br>&emsp; + Instance types <br>&emsp; + AMI <br>&emsp; + EBS <br>&emsp; + ... <br> - Các cách remote SSH vào EC2 <br> - Tìm hiểu Elastic IP   <br>                  | 14/08/2025   | 15/08/2025      | <https://cloudjourney.awsstudygroup.com/> |
-| 6   | - **Thực hành:** <br>&emsp; + Tạo EC2 instance <br>&emsp; + Kết nối SSH <br>&emsp; + Gắn EBS volume                                                                                         | 15/08/2025   | 15/08/2025      | <https://cloudjourney.awsstudygroup.com/> |
+| 2   | - Học IAM fundamentals và các khái niệm. <br> - Hiểu IAM users và groups. <br> - Nghiên cứu authentication vs authorization. <br> - Học về access keys và console access.                                                                      | 02/02/2026   | 02/02/2026      | <https://docs.aws.amazon.com/IAM/latest/UserGuide/introduction.html> <br> <https://docs.aws.amazon.com/IAM/latest/UserGuide/id_users.html> <br> <https://docs.aws.amazon.com/IAM/latest/UserGuide/id_groups.html> <br> <https://docs.aws.amazon.com/prescriptive-guidance/latest/modernization-net-applications-security/authentication.html> <br> <https://docs.aws.amazon.com/IAM/latest/UserGuide/id_credentials_access-keys.html>            |
+| 3   | - Học khái niệm IAM roles. <br> - Hiểu các loại policy (managed vs inline). <br> - Nghiên cứu cấu trúc và cú pháp policy. <br> - Học về trust policies.                                               | 03/02/2026   | 03/02/2026      | <https://docs.aws.amazon.com/IAM/latest/UserGuide/id_roles.html> <br> <https://docs.aws.amazon.com/IAM/latest/UserGuide/access_policies.html> <br> <https://docs.aws.amazon.com/IAM/latest/UserGuide/id_roles_create_for-custom.html> |
+| 4   | - Học MFA (Multi-Factor Authentication). <br> - Hiểu password policies. <br> - Nghiên cứu nguyên tắc least privilege. <br> - Học về CloudTrail cho auditing.                                                    | 04/02/2026   | 04/02/2026      | <https://docs.aws.amazon.com/IAM/latest/UserGuide/id_credentials_mfa.html> <br> <https://docs.aws.amazon.com/IAM/latest/UserGuide/id_credentials_passwords_account-policy.html> <br> <https://docs.aws.amazon.com/IAM/latest/UserGuide/getting-started-reduce-permissions.html> <br> <https://docs.aws.amazon.com/awscloudtrail/latest/userguide/cloudtrail-user-guide.html> |
+| 5   | - **Thực hành:** Tạo IAM infrastructure: <br>   + Tạo IAM users với console access. <br>   + Tạo IAM groups (Admin, Developer, ReadOnly). <br>   + Gắn managed policies vào groups. <br>   + Thiết lập MFA cho users. <br>   + Cấu hình password policy. <br>   + Tạo IAM role cho EC2. <br>   + Test access và permissions cơ bản.                                 | 05/02/2026   | 05/02/2026      | <https://docs.aws.amazon.com/network-manager/latest/infrastructure-performance/identity-access-management.html> |
+| 6   | - **Dự án thực hành:** Xây dựng môi trường multi-user bảo mật: <br>   + Tạo 3 user groups với permissions khác nhau. <br>   + Tạo nhiều IAM users và gán vào groups. <br>   + Triển khai least privilege access. <br>   + Test user permissions và access. <br>   + Thiết lập cross-service access sử dụng roles. <br>   + Kích hoạt CloudTrail cho security auditing. <br>   + Xác minh security compliance.                                  | 06/02/2026   | 06/02/2026      |  |
 
 
 ### Kết quả đạt được tuần 4:
 
-* Hiểu AWS là gì và nắm được các nhóm dịch vụ cơ bản: 
-  * Compute
-  * Storage
-  * Networking 
-  * Database
-  * ...
+* **Hiểu AWS IAM fundamentals:**
+  * Học kiến trúc IAM và các thành phần.
+  * Hiểu users, groups, và roles.
+  * Học các khái niệm authentication vs authorization.
+  * Hiểu access keys và các phương thức console access.
 
-* Đã tạo và cấu hình AWS Free Tier account thành công.
+* **Tích lũy chuyên môn về IAM policies:**
+  * Hiểu các loại policy (managed vs inline).
+  * Học cấu trúc policy và cú pháp JSON.
+  * Hiểu trust policies và assume role.
+  * Triển khai các thực hành tốt nhất về policy.
 
-* Làm quen với AWS Management Console và biết cách tìm, truy cập, sử dụng dịch vụ từ giao diện web.
+* **Tạo thành công IAM infrastructure:**
+  * Tạo IAM users với console access.
+  * Tạo IAM groups (Admin, Developer, ReadOnly).
+  * Gắn managed policies vào groups.
+  * Thiết lập MFA cho users.
+  * Cấu hình password policy.
+  * Tạo IAM role cho EC2.
+  * Test access và permissions cơ bản.
 
-* Cài đặt và cấu hình AWS CLI trên máy tính bao gồm:
-  * Access Key
-  * Secret Key
-  * Region mặc định
-  * ...
+* **Xây dựng môi trường multi-user bảo mật:**
+  * Tạo 3 user groups với permissions khác nhau.
+  * Tạo nhiều IAM users và gán vào groups.
+  * Triển khai least privilege access.
+  * Test user permissions và access.
+  * Thiết lập cross-service access sử dụng roles.
+  * Kích hoạt CloudTrail cho security auditing.
+  * Xác minh security compliance.
 
-* Sử dụng AWS CLI để thực hiện các thao tác cơ bản như:
-
-  * Kiểm tra thông tin tài khoản & cấu hình
-  * Lấy danh sách region
-  * Xem dịch vụ EC2
-  * Tạo và quản lý key pair
-  * Kiểm tra thông tin dịch vụ đang chạy
-  * ...
-
-* Có khả năng kết nối giữa giao diện web và CLI để quản lý tài nguyên AWS song song.
-* ...
-
-
+* **Phát triển kỹ năng AWS security nền tảng** bao gồm identity management, access control, và security auditing.
