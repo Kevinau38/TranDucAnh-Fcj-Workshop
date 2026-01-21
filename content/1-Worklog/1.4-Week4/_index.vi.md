@@ -20,8 +20,8 @@ pre: " <b> 1.4. </b> "
 | 2   | - Học IAM fundamentals và các khái niệm. <br> - Hiểu IAM users và groups. <br> - Nghiên cứu authentication vs authorization. <br> - Học về access keys và console access.                                                                      | 02/02/2026   | 02/02/2026      | <https://docs.aws.amazon.com/IAM/latest/UserGuide/introduction.html> <br> <https://docs.aws.amazon.com/IAM/latest/UserGuide/id_users.html> <br> <https://docs.aws.amazon.com/IAM/latest/UserGuide/id_groups.html> <br> <https://docs.aws.amazon.com/prescriptive-guidance/latest/modernization-net-applications-security/authentication.html> <br> <https://docs.aws.amazon.com/IAM/latest/UserGuide/id_credentials_access-keys.html>            |
 | 3   | - Học khái niệm IAM roles. <br> - Hiểu các loại policy (managed vs inline). <br> - Nghiên cứu cấu trúc và cú pháp policy. <br> - Học về trust policies.                                               | 03/02/2026   | 03/02/2026      | <https://docs.aws.amazon.com/IAM/latest/UserGuide/id_roles.html> <br> <https://docs.aws.amazon.com/IAM/latest/UserGuide/access_policies.html> <br> <https://docs.aws.amazon.com/IAM/latest/UserGuide/id_roles_create_for-custom.html> |
 | 4   | - Học MFA (Multi-Factor Authentication). <br> - Hiểu password policies. <br> - Nghiên cứu nguyên tắc least privilege. <br> - Học về IAM best practices.                                                    | 04/02/2026   | 04/02/2026      | <https://docs.aws.amazon.com/IAM/latest/UserGuide/id_credentials_mfa.html> <br> <https://docs.aws.amazon.com/IAM/latest/UserGuide/id_credentials_passwords_account-policy.html> <br> <https://docs.aws.amazon.com/IAM/latest/UserGuide/getting-started-reduce-permissions.html> <br> <https://docs.aws.amazon.com/IAM/latest/UserGuide/best-practices.html> |
-| 5   | - **Thực hành:** Tạo IAM infrastructure: <br>   + Tạo IAM users với console access. <br>   + Tạo IAM groups (Admin, Developer, ReadOnly). <br>   + Gắn managed policies vào groups. <br>   + Thiết lập MFA cho users. <br>   + Cấu hình password policy. <br>   + Tạo IAM role cho EC2. <br>   + Test access và permissions cơ bản.                                 | 05/02/2026   | 05/02/2026      | <https://docs.aws.amazon.com/network-manager/latest/infrastructure-performance/identity-access-management.html> |
-| 6   | - **Dự án thực hành:** Xây dựng môi trường multi-user bảo mật: <br>   + Tạo 3 user groups với permissions khác nhau. <br>   + Tạo nhiều IAM users và gán vào groups. <br>   + Triển khai least privilege access. <br>   + Test user permissions và access. <br>   + Thiết lập cross-service access sử dụng roles. <br>   + Xác minh security compliance và access controls.                                  | 06/02/2026   | 06/02/2026      |  |
+| 5   | - **Thực hành:** Tạo IAM infrastructure: <br>   + Tạo IAM users với console access. <br>   + Tạo IAM groups (Admin, Developer, ReadOnly, S3-Users, EC2-Users, VPC-Users). <br>   + Gắn managed policies vào groups. <br>   + Thiết lập MFA cho users. <br>   + Cấu hình password policy. <br>   + Tạo IAM role cho EC2. <br>   + Test access và permissions cơ bản.                                 | 05/02/2026   | 05/02/2026      | <https://docs.aws.amazon.com/network-manager/latest/infrastructure-performance/identity-access-management.html> |
+| 6   | - **Dự án thực hành:** Xây dựng môi trường multi-user bảo mật: <br>   + Tạo 6 user groups với permissions khác nhau. <br>   + Tạo nhiều IAM users và gán vào groups. <br>   + Triển khai least privilege access. <br>   + Test user permissions và access. <br>   + Thiết lập cross-service access sử dụng roles. <br>   + Xác minh security compliance và access controls.                                  | 06/02/2026   | 06/02/2026      |  |
 
 
 ### Kết quả đạt được tuần 4:
@@ -40,7 +40,7 @@ pre: " <b> 1.4. </b> "
 
 * **Tạo thành công IAM infrastructure:**
   * Tạo IAM users với console access.
-  * Tạo IAM groups (Admin, Developer, ReadOnly).
+  * Tạo IAM groups (Admin, Developer, ReadOnly, S3-Users, EC2-Users, VPC-Users).
   * Gắn managed policies vào groups.
   * Thiết lập MFA cho users.
   * Cấu hình password policy.
@@ -48,7 +48,7 @@ pre: " <b> 1.4. </b> "
   * Test access và permissions cơ bản.
 
 * **Xây dựng môi trường multi-user bảo mật:**
-  * Tạo 3 user groups với permissions khác nhau.
+  * Tạo 6 user groups với permissions khác nhau.
   * Tạo nhiều IAM users và gán vào groups.
   * Triển khai least privilege access.
   * Test user permissions và access.
