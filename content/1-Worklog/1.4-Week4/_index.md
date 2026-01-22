@@ -9,7 +9,7 @@ pre: " <b> 1.4. </b> "
 
 * Learn AWS IAM fundamentals.
 * Understand users, groups, and roles.
-* Master policies and permissions.
+* Understand policies and permissions.
 * Practice MFA setup and security best practices.
 * Understand least privilege principle.
 * Hands-on: Build secure multi-user environment.
@@ -21,7 +21,7 @@ pre: " <b> 1.4. </b> "
 | 3   | - Learn IAM roles concepts. <br> - Understand policy types (managed vs inline). <br> - Study policy structure and syntax. <br> - Learn about trust policies.                                               | 03/02/2026 | 03/02/2026      | <https://docs.aws.amazon.com/IAM/latest/UserGuide/id_roles.html> <br> <https://docs.aws.amazon.com/IAM/latest/UserGuide/access_policies.html> <br> <https://docs.aws.amazon.com/IAM/latest/UserGuide/id_roles_create_for-custom.html> |
 | 4   | - Learn MFA (Multi-Factor Authentication). <br> - Understand password policies. <br> - Study least privilege principle. <br> - Learn about IAM best practices.                                                    | 04/02/2026 | 04/02/2026      | <https://docs.aws.amazon.com/IAM/latest/UserGuide/id_credentials_mfa.html> <br> <https://docs.aws.amazon.com/IAM/latest/UserGuide/id_credentials_passwords_account-policy.html> <br> <https://docs.aws.amazon.com/IAM/latest/UserGuide/getting-started-reduce-permissions.html> <br> <https://docs.aws.amazon.com/IAM/latest/UserGuide/best-practices.html> |
 | 5   | - **Practice:** Create IAM infrastructure: <br>   + Create IAM users with console access. <br>   + Create IAM groups (Admin, Developer, ReadOnly, S3-Users, EC2-Users, VPC-Users). <br>   + Attach managed policies to groups. <br>   + Set up MFA for users. <br>   + Configure password policy. <br>   + Create IAM role for EC2.                                 | 05/02/2026 | 05/02/2026      | <https://docs.aws.amazon.com/network-manager/latest/infrastructure-performance/identity-access-management.html> |
-| 6   | - **Hands-on Project:** Build secure multi-user environment: <br>   + Create 6 user groups with different permissions. <br>   + Create multiple IAM users and assign to groups. <br>   + Implement least privilege access. <br>   + Set up cross-service access using roles.                                  | 06/02/2026 | 06/02/2026      |  |
+| 6   | - **Hands-on Project:** Build secure multi-user environment: <br>   + Create 6 user groups with different permissions. <br>   + Create multiple IAM users and assign to groups. <br>   + Implement least privilege access. <br>   + Set up cross-service access using roles.                                  | 06/02/2026 | 06/02/2026      | <https://docs.google.com/document/d/1nRfWAB5O6gyQqekVCemAArAbBQ95pYWZR8qKNSuihc0/edit?usp=sharing> |
 
 
 ### Week 4 Achievements:
@@ -52,4 +52,4 @@ pre: " <b> 1.4. </b> "
   * Implemented least privilege access.
   * Set up cross-service access using roles.
 
-* **Developed foundational AWS security skills** including identity management, access control, and security auditing.
+* **Developed foundational AWS security skills** including identity management, access control, and policy management.
