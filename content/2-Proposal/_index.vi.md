@@ -5,104 +5,106 @@ weight: 2
 chapter: false
 pre: " <b> 2. </b> "
 ---
-{{% notice warning %}}
-⚠️ **Lưu ý:** Các thông tin dưới đây chỉ nhằm mục đích tham khảo, vui lòng **không sao chép nguyên văn** cho bài báo cáo của bạn kể cả warning này.
-{{% /notice %}}
+# Workshop Triển khai Bảo mật AWS WAF
+## Cấu hình Tường lửa Ứng dụng Web Toàn diện để Tăng cường Bảo mật
 
-Tại phần này, bạn cần tóm tắt các nội dung trong workshop mà bạn **dự tính** sẽ làm.
+### 1. Tóm tắt điều hành
+Workshop Triển khai Bảo mật AWS WAF được thiết kế để cung cấp trải nghiệm thực hành với cấu hình tường lửa ứng dụng web và các thực hành bảo mật tốt nhất. Workshop bao gồm triển khai WAF toàn diện bao gồm managed rules, custom security rules, bot control, và rate limiting. Thông qua triển khai và kiểm thử thực tế, người tham gia học cách bảo vệ ứng dụng web chống lại các cuộc tấn công phổ biến bao gồm SQL injection, XSS, path traversal, và các mối đe dọa bot tự động trong khi duy trì hiệu suất ứng dụng tối ưu và tận dụng kiến trúc serverless AWS cho các giải pháp bảo mật có thể mở rộng.
 
-# IoT Weather Platform for Lab Research  
-## Giải pháp AWS Serverless hợp nhất cho giám sát thời tiết thời gian thực  
+### 2. Tuyên bố vấn đề
+### Vấn đề hiện tại là gì?
+Các ứng dụng web đang đối mặt với các mối đe dọa bảo mật ngày càng tăng từ các tác nhân độc hại sử dụng công cụ tự động và kỹ thuật tấn công tinh vi. Nhiều tổ chức thiếu kinh nghiệm thực tế với các giải pháp bảo mật cloud-native và gặp khó khăn trong việc triển khai bảo vệ ứng dụng web hiệu quả. Các biện pháp bảo mật truyền thống thường yêu cầu cấu hình phức tạp và có thể ảnh hưởng đến hiệu suất ứng dụng, trong khi các giải pháp bảo mật bên thứ ba tốn kém và khó tích hợp.
 
-### 1. Tóm tắt điều hành  
-IoT Weather Platform được thiết kế dành cho nhóm *ITea Lab* tại TP. Hồ Chí Minh nhằm nâng cao khả năng thu thập và phân tích dữ liệu thời tiết. Nền tảng hỗ trợ tối đa 5 trạm thời tiết, có khả năng mở rộng lên 10–15 trạm, sử dụng thiết bị biên Raspberry Pi kết hợp cảm biến ESP32 để truyền dữ liệu qua MQTT. Nền tảng tận dụng các dịch vụ AWS Serverless để cung cấp giám sát thời gian thực, phân tích dự đoán và tiết kiệm chi phí, với quyền truy cập giới hạn cho 5 thành viên phòng lab thông qua Amazon Cognito.  
+### Giải pháp
+Workshop triển khai AWS WAF thông qua các phần thực hành toàn diện bao gồm cấu hình security rules, phương pháp kiểm thử, và tối ưu hóa hiệu suất. AWS WAF tích hợp với Amazon CloudFront để bảo vệ toàn cầu, AWS Lambda cho xử lý tự động, Amazon S3 cho phân phối nội dung an toàn, và Amazon CloudWatch cho giám sát và phân tích thời gian thực. Tương tự như các nền tảng bảo mật doanh nghiệp, giải pháp cung cấp quản lý bảo mật tập trung và phát hiện mối đe dọa tự động, mặc dù workshop này tập trung vào triển khai thực tế và được thiết kế cho mục đích giáo dục. Các tính năng chính bao gồm triển khai managed rules, custom security rules, cơ chế bot control, và dashboard giám sát toàn diện với chi phí vận hành hiệu quả.
 
-### 2. Tuyên bố vấn đề  
-*Vấn đề hiện tại*  
-Các trạm thời tiết hiện tại yêu cầu thu thập dữ liệu thủ công, khó quản lý khi có nhiều trạm. Không có hệ thống tập trung cho dữ liệu hoặc phân tích thời gian thực, và các nền tảng bên thứ ba thường tốn kém và quá phức tạp.  
+### Lợi ích và Hoàn vốn Đầu tư
+Workshop thiết lập một nguồn tài nguyên cơ bản cho các chuyên gia IT để phát triển kỹ năng bảo mật web toàn diện, phục vụ như một nguồn học tập thực tế, và cung cấp trải nghiệm thực hành cho các kỹ sư bảo mật và nhà phát triển. Nó giảm thời gian triển khai bảo mật thông qua các phương pháp đã được chứng minh và thực hành tốt nhất, đơn giản hóa triển khai và bảo trì, và cải thiện tư thế bảo mật tổng thể. Chi phí triển khai tối thiểu sử dụng tài nguyên AWS Free Tier, với chi phí vận hành liên tục dưới 10 USD hàng tháng cho các triển khai quy mô nhỏ. Tất cả cấu hình bảo mật đều là template có thể tái sử dụng, loại bỏ chi phí phát triển bổ sung. Lợi tức đầu tư là ngay lập tức thông qua khả năng bảo mật nâng cao và giảm thiểu rủi ro lỗ hổng.
 
-*Giải pháp*  
-Nền tảng sử dụng AWS IoT Core để tiếp nhận dữ liệu MQTT, AWS Lambda và API Gateway để xử lý, Amazon S3 để lưu trữ (bao gồm data lake), và AWS Glue Crawlers cùng các tác vụ ETL để trích xuất, chuyển đổi, tải dữ liệu từ S3 data lake sang một S3 bucket khác để phân tích. AWS Amplify với Next.js cung cấp giao diện web, và Amazon Cognito đảm bảo quyền truy cập an toàn. Tương tự như Thingsboard và CoreIoT, người dùng có thể đăng ký thiết bị mới và quản lý kết nối, nhưng nền tảng này hoạt động ở quy mô nhỏ hơn và phục vụ mục đích sử dụng nội bộ. Các tính năng chính bao gồm bảng điều khiển thời gian thực, phân tích xu hướng và chi phí vận hành thấp.  
+### 3. Kiến trúc Giải pháp
+Workshop sử dụng kiến trúc bảo mật AWS toàn diện tích hợp nhiều lớp bảo vệ. Các chính sách bảo mật được triển khai qua AWS WAF, phân phối toàn cầu thông qua Amazon CloudFront, và được giám sát bởi AWS CloudWatch với xử lý tự động được xử lý bởi AWS Lambda. Nội dung tĩnh được phân phối an toàn thông qua tích hợp Amazon S3. Kiến trúc cung cấp bảo vệ có thể mở rộng cho các ứng dụng web với khả năng phát hiện và phản ứng mối đe dọa thời gian thực. Kiến trúc được mô tả chi tiết dưới đây:
 
-*Lợi ích và hoàn vốn đầu tư (ROI)*  
-Giải pháp tạo nền tảng cơ bản để các thành viên phòng lab phát triển một nền tảng IoT lớn hơn, đồng thời cung cấp nguồn dữ liệu cho những người nghiên cứu AI phục vụ huấn luyện mô hình hoặc phân tích. Nền tảng giảm bớt báo cáo thủ công cho từng trạm thông qua hệ thống tập trung, đơn giản hóa quản lý và bảo trì, đồng thời cải thiện độ tin cậy dữ liệu. Chi phí hàng tháng ước tính 0,66 USD (theo AWS Pricing Calculator), tổng cộng 7,92 USD cho 12 tháng. Tất cả thiết bị IoT đã được trang bị từ hệ thống trạm thời tiết hiện tại, không phát sinh chi phí phát triển thêm. Thời gian hoàn vốn 6–12 tháng nhờ tiết kiệm đáng kể thời gian thao tác thủ công.  
+![Kiến trúc AWS WAF WebACL](/images/2-Proposal/waf_webacl_architecture.png)
 
-### 3. Kiến trúc giải pháp  
-Nền tảng áp dụng kiến trúc AWS Serverless để quản lý dữ liệu từ 5 trạm dựa trên Raspberry Pi, có thể mở rộng lên 15 trạm. Dữ liệu được tiếp nhận qua AWS IoT Core, lưu trữ trong S3 data lake và xử lý bởi AWS Glue Crawlers và ETL jobs để chuyển đổi và tải vào một S3 bucket khác cho mục đích phân tích. Lambda và API Gateway xử lý bổ sung, trong khi Amplify với Next.js cung cấp bảng điều khiển được bảo mật bởi Cognito.  
+![Kiến trúc Workshop AWS WAF](/images/2-Proposal/workshop_architecture.png)
 
-![IoT Weather Station Architecture](/images/2-Proposal/edge_architecture.jpeg)
+### Dịch vụ AWS Sử dụng
+- **AWS WAF**: Dịch vụ tường lửa cốt lõi cho triển khai rules và chính sách bảo mật.
+- **Amazon CloudFront**: Mạng phân phối nội dung cho tích hợp WAF và bảo vệ toàn cầu.
+- **AWS Lambda**: Các hàm serverless cho xử lý tự động và logic tùy chỉnh.
+- **Amazon S3**: Lưu trữ nội dung tĩnh và lưu trữ file an toàn.
+- **Amazon CloudWatch**: Giám sát và ghi log cho các sự kiện bảo mật và metrics hiệu suất.
 
-![IoT Weather Platform Architecture](/images/2-Proposal/platform_architecture.jpeg)
+### Thiết kế Thành phần
+- **Security Rules**: AWS WAF triển khai managed và custom rules cho bảo vệ mối đe dọa toàn diện.
+- **Phân phối Traffic**: Amazon CloudFront phân phối nội dung toàn cầu trong khi áp dụng chính sách bảo mật.
+- **Lưu trữ Nội dung**: Amazon S3 lưu trữ nội dung web tĩnh với kiểm soát truy cập an toàn.
+- **Xử lý Tự động**: Các hàm AWS Lambda xử lý xử lý sự kiện bảo mật và logic tùy chỉnh.
+- **Dashboard Giám sát**: Amazon CloudWatch cung cấp metrics bảo mật thời gian thực và cảnh báo.
+- **Môi trường Workshop**: Nền tảng kiểm thử tích hợp cho thực hành triển khai bảo mật thực tế.
 
-*Dịch vụ AWS sử dụng*  
-- *AWS IoT Core*: Tiếp nhận dữ liệu MQTT từ 5 trạm, mở rộng lên 15.  
-- *AWS Lambda*: Xử lý dữ liệu và kích hoạt Glue jobs (2 hàm).  
-- *Amazon API Gateway*: Giao tiếp với ứng dụng web.  
-- *Amazon S3*: Lưu trữ dữ liệu thô (data lake) và dữ liệu đã xử lý (2 bucket).  
-- *AWS Glue*: Crawlers lập chỉ mục dữ liệu, ETL jobs chuyển đổi và tải dữ liệu.  
-- *AWS Amplify*: Lưu trữ giao diện web Next.js.  
-- *Amazon Cognito*: Quản lý quyền truy cập cho người dùng phòng lab.  
+### 4. Triển khai Kỹ thuật
+**Các Giai đoạn Triển khai**
+Workshop này có triển khai bảo mật toàn diện bao gồm các dịch vụ AWS cơ bản và cấu hình WAF nâng cao—theo 4 giai đoạn có cấu trúc:
+- Thiết lập Nền tảng và AWS Fundamentals: Nghiên cứu các dịch vụ AWS cốt lõi (EC2, S3, VPC, IAM) và thiết kế kiến trúc bảo mật (Tuần 1-4).
+- Đánh giá Bảo mật và Lập kế hoạch: Đánh giá lỗ hổng ứng dụng và lập kế hoạch chiến lược triển khai WAF rules (Tuần 5).
+- Cấu hình WAF và Triển khai Rules: Triển khai managed rules, custom rules, bot control, và rate limiting với kiểm thử (Tuần 6).
+- Validation, Kiểm thử, và Tài liệu: Tiến hành kiểm thử bảo mật, validation hiệu suất, và hoàn thành tài liệu toàn diện (Tuần 7).
 
-*Thiết kế thành phần*  
-- *Thiết bị biên*: Raspberry Pi thu thập và lọc dữ liệu cảm biến, gửi tới IoT Core.  
-- *Tiếp nhận dữ liệu*: AWS IoT Core nhận tin nhắn MQTT từ thiết bị biên.  
-- *Lưu trữ dữ liệu*: Dữ liệu thô lưu trong S3 data lake; dữ liệu đã xử lý lưu ở một S3 bucket khác.  
-- *Xử lý dữ liệu*: AWS Glue Crawlers lập chỉ mục dữ liệu; ETL jobs chuyển đổi để phân tích.  
-- *Giao diện web*: AWS Amplify lưu trữ ứng dụng Next.js cho bảng điều khiển và phân tích thời gian thực.  
-- *Quản lý người dùng*: Amazon Cognito giới hạn 5 tài khoản hoạt động.  
+**Yêu cầu Kỹ thuật**
+- Môi trường Workshop: Tài khoản AWS Free Tier với quyền truy cập vào các dịch vụ WAF, CloudFront, Lambda, S3, và CloudWatch. Người tham gia cần hiểu biết cơ bản về ứng dụng web và giao thức HTTP để học hiệu quả.
+- Nền tảng Bảo mật: Kiến thức thực tế về AWS WAF (cấu hình rules), CloudFront (thiết lập distribution), Lambda (xử lý sự kiện), S3 (lưu trữ nội dung), và CloudWatch (dashboard giám sát). Sử dụng AWS Management Console và CLI cho cấu hình thực hành. Tích hợp CloudFront giảm độ phức tạp trong khi cung cấp bảo vệ WAF toàn cầu cho ứng dụng web.
 
-### 4. Triển khai kỹ thuật  
-*Các giai đoạn triển khai*  
-Dự án gồm 2 phần — thiết lập trạm thời tiết biên và xây dựng nền tảng thời tiết — mỗi phần trải qua 4 giai đoạn:  
-1. *Nghiên cứu và vẽ kiến trúc*: Nghiên cứu Raspberry Pi với cảm biến ESP32 và thiết kế kiến trúc AWS Serverless (1 tháng trước kỳ thực tập).  
-2. *Tính toán chi phí và kiểm tra tính khả thi*: Sử dụng AWS Pricing Calculator để ước tính và điều chỉnh (Tháng 1).  
-3. *Điều chỉnh kiến trúc để tối ưu chi phí/giải pháp*: Tinh chỉnh (ví dụ tối ưu Lambda với Next.js) để đảm bảo hiệu quả (Tháng 2).  
-4. *Phát triển, kiểm thử, triển khai*: Lập trình Raspberry Pi, AWS services với CDK/SDK và ứng dụng Next.js, sau đó kiểm thử và đưa vào vận hành (Tháng 2–3).  
+### 5. Lộ trình & Mốc quan trọng
+**Lộ trình Workshop**
+- Chuẩn bị Workshop (Tuần 0): Chuẩn bị và thiết lập tài khoản AWS với xác minh quyền truy cập dịch vụ.
+- Triển khai Workshop (Tuần 1-7): 7 tuần học có cấu trúc.
+    - Tuần 1-4: AWS fundamentals (EC2, S3, VPC, IAM) và thiết lập hạ tầng.
+    - Tuần 5: Khởi động workshop WAF và triển khai managed rules.
+    - Tuần 6: Cấu hình WAF nâng cao với custom rules và bot control.
+    - Tuần 7: Kiểm thử, validation, và tài liệu toàn diện.
+- Sau Workshop: Giám sát bảo mật liên tục và tối ưu hóa rules.
 
-*Yêu cầu kỹ thuật*  
-- *Trạm thời tiết biên*: Cảm biến (nhiệt độ, độ ẩm, lượng mưa, tốc độ gió), vi điều khiển ESP32, Raspberry Pi làm thiết bị biên. Raspberry Pi chạy Raspbian, sử dụng Docker để lọc dữ liệu và gửi 1 MB/ngày/trạm qua MQTT qua Wi-Fi.  
-- *Nền tảng thời tiết*: Kiến thức thực tế về AWS Amplify (lưu trữ Next.js), Lambda (giảm thiểu do Next.js xử lý), AWS Glue (ETL), S3 (2 bucket), IoT Core (gateway và rules), và Cognito (5 người dùng). Sử dụng AWS CDK/SDK để lập trình (ví dụ IoT Core rules tới S3). Next.js giúp giảm tải Lambda cho ứng dụng web fullstack.  
+### 6. Phạm vi Workshop & Sản phẩm Bàn giao
+**Sản phẩm Bàn giao Workshop**
+- **Hướng dẫn Triển khai**: Tài liệu cấu hình WAF từng bước với screenshots và ví dụ.
+- **Cấu hình Bảo mật**: Bộ rules hoàn chỉnh và template chính sách cho triển khai production.
+- **Quy trình Kiểm thử**: Phương pháp validation bảo mật và test cases toàn diện.
+- **Thiết lập Giám sát**: Dashboard CloudWatch và cấu hình cảnh báo cho các sự kiện bảo mật.
+- **Tài liệu Thực hành Tốt nhất**: Khuyến nghị bảo mật và hướng dẫn tối ưu hóa hiệu suất.
 
-### 5. Lộ trình & Mốc triển khai  
-- *Trước thực tập (Tháng 0)*: 1 tháng lên kế hoạch và đánh giá trạm cũ.  
-- *Thực tập (Tháng 1–3)*:  
-    - Tháng 1: Học AWS và nâng cấp phần cứng.  
-    - Tháng 2: Thiết kế và điều chỉnh kiến trúc.  
-    - Tháng 3: Triển khai, kiểm thử, đưa vào sử dụng.  
-- *Sau triển khai*: Nghiên cứu thêm trong vòng 1 năm.  
+**Chi phí Hạ tầng**
+- Dịch vụ AWS (Sử dụng Free Tier):
+    - AWS WAF: $0.60/tháng (1 triệu requests, 10 rules).
+    - Amazon CloudFront: $0.085/tháng (1 GB data transfer).
+    - AWS Lambda: $0.00/tháng (1,000 requests trong free tier).
+    - Amazon S3: $0.023/tháng (1 GB storage, 2,000 requests).
+    - Amazon CloudWatch: $0.30/tháng (10 metrics, 1,000 API requests).
 
-### 6. Ước tính ngân sách  
-Có thể xem chi phí trên [AWS Pricing Calculator](https://calculator.aws/#/estimate?id=621f38b12a1ef026842ba2ddfe46ff936ed4ab01)  
-Hoặc tải [tệp ước tính ngân sách](../attachments/budget_estimation.pdf).  
+Tổng cộng: ~$1.00/tháng cho môi trường workshop
 
-*Chi phí hạ tầng*  
-- AWS Lambda: 0,00 USD/tháng (1.000 request, 512 MB lưu trữ).  
-- S3 Standard: 0,15 USD/tháng (6 GB, 2.100 request, 1 GB quét).  
-- Truyền dữ liệu: 0,02 USD/tháng (1 GB vào, 1 GB ra).  
-- AWS Amplify: 0,35 USD/tháng (256 MB, request 500 ms).  
-- Amazon API Gateway: 0,01 USD/tháng (2.000 request).  
-- AWS Glue ETL Jobs: 0,02 USD/tháng (2 DPU).  
-- AWS Glue Crawlers: 0,07 USD/tháng (1 crawler).  
-- MQTT (IoT Core): 0,08 USD/tháng (5 thiết bị, 45.000 tin nhắn).  
+### 7. Metrics Thành công & Đánh giá
+**Metrics Kỹ thuật**
+- **Tính Hoàn chỉnh Cấu hình**: Triển khai thành công tất cả các phần workshop với kết quả được ghi chép.
+- **Hiệu quả Bảo mật**: Validation bảo vệ chống lại các vector tấn công phổ biến thông qua kiểm thử có kiểm soát.
+- **Tác động Hiệu suất**: Đo lường độ trễ và throughput với các chính sách bảo mật được kích hoạt.
+- **Phạm vi Giám sát**: Triển khai hệ thống theo dõi và cảnh báo sự kiện bảo mật hoàn chỉnh.
 
-*Tổng*: 0,7 USD/tháng, 8,40 USD/12 tháng  
-- *Phần cứng*: 265 USD một lần (Raspberry Pi 5 và cảm biến).  
+**Kết quả Học tập**
+- **Kỹ năng Thực tế**: Khả năng cấu hình và quản lý WAF thực hành cho môi trường production.
+- **Kiến thức Bảo mật**: Hiểu biết toàn diện về bối cảnh mối đe dọa ứng dụng web và chiến lược bảo vệ.
+- **Chuyên môn AWS**: Thành thạo với các dịch vụ bảo mật cloud-native và các mẫu tích hợp của chúng.
+- **Chất lượng Tài liệu**: Hướng dẫn triển khai chuyên nghiệp và tài liệu thực hành bảo mật tốt nhất.
 
-### 7. Đánh giá rủi ro  
-*Ma trận rủi ro*  
-- Mất mạng: Ảnh hưởng trung bình, xác suất trung bình.  
-- Hỏng cảm biến: Ảnh hưởng cao, xác suất thấp.  
-- Vượt ngân sách: Ảnh hưởng trung bình, xác suất thấp.  
+### 8. Kết quả Kỳ vọng & Tác động
+**Phát triển Kỹ năng Kỹ thuật**
+- **Cấu hình WAF**: Trải nghiệm thực hành với thiết lập AWS WAF, quản lý rules, và tối ưu hóa.
+- **Triển khai Bảo mật**: Kiến thức thực tế về chiến lược bảo vệ ứng dụng web và giảm thiểu mối đe dọa.
+- **Chuyên môn Giám sát**: Kỹ năng tích hợp CloudWatch cho phân tích sự kiện bảo mật và phản ứng sự cố.
+- **Tối ưu hóa Hiệu suất**: Cân bằng hiệu quả bảo mật với yêu cầu hiệu suất ứng dụng.
 
-*Chiến lược giảm thiểu*  
-- Mạng: Lưu trữ cục bộ trên Raspberry Pi với Docker.  
-- Cảm biến: Kiểm tra định kỳ, dự phòng linh kiện.  
-- Chi phí: Cảnh báo ngân sách AWS, tối ưu dịch vụ.  
-
-*Kế hoạch dự phòng*  
-- Quay lại thu thập thủ công nếu AWS gặp sự cố.  
-- Sử dụng CloudFormation để khôi phục cấu hình liên quan đến chi phí.  
-
-### 8. Kết quả kỳ vọng  
-*Cải tiến kỹ thuật*: Dữ liệu và phân tích thời gian thực thay thế quy trình thủ công. Có thể mở rộng tới 10–15 trạm.  
-*Giá trị dài hạn*: Nền tảng dữ liệu 1 năm cho nghiên cứu AI, có thể tái sử dụng cho các dự án tương lai.
+**Giá trị Dài hạn**
+- **Sẵn sàng Production**: Kỹ năng áp dụng trực tiếp cho triển khai bảo mật thực tế và môi trường doanh nghiệp.
+- **Phát triển Nghề nghiệp**: Chuyên môn bảo mật cloud được công nhận trong ngành cho cơ hội thăng tiến nghề nghiệp.
+- **Thực hành Bảo mật Tốt nhất**: Hiểu biết toàn diện về chiến lược defense-in-depth cho ứng dụng web.
+- **Học tập Liên tục**: Nền tảng cho các chủ đề bảo mật nâng cao và lộ trình chứng chỉ AWS.

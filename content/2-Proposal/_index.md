@@ -5,111 +5,106 @@ weight: 2
 chapter: false
 pre: " <b> 2. </b> "
 ---
-{{% notice warning %}}
-⚠️ **Note:** The information below is for reference purposes only. Please **do not copy verbatim** for your report, including this warning.
-{{% /notice %}}
-
-In this section, you need to summarize the contents of the workshop that you **plan** to conduct.
-
-# IoT Weather Platform for Lab Research
-## A Unified AWS Serverless Solution for Real-Time Weather Monitoring
+# AWS WAF Security Implementation Workshop
+## Comprehensive Web Application Firewall Configuration for Enhanced Security
 
 ### 1. Executive Summary
-The IoT Weather Platform is designed for the ITea Lab team in Ho Chi Minh City to enhance weather data collection and analysis. It supports up to 5 weather stations, with potential scalability to 10-15, utilizing Raspberry Pi edge devices with ESP32 sensors to transmit data via MQTT. The platform leverages AWS Serverless services to deliver real-time monitoring, predictive analytics, and cost efficiency, with access restricted to 5 lab members via Amazon Cognito.
+The AWS WAF Security Implementation Workshop is designed to provide hands-on experience with web application firewall configuration and security best practices. The workshop covers comprehensive WAF deployment including managed rules, custom security rules, bot control, and rate limiting. Through practical implementation and testing, participants learn to protect web applications against common attacks including SQL injection, XSS, path traversal, and automated bot threats while maintaining optimal application performance and leveraging AWS serverless architecture for scalable security solutions.
 
 ### 2. Problem Statement
-### What’s the Problem?
-Current weather stations require manual data collection, becoming unmanageable with multiple units. There is no centralized system for real-time data or analytics, and third-party platforms are costly and overly complex.
+### What's the Problem?
+Web applications face increasing security threats from malicious actors using automated tools and sophisticated attack techniques. Many organizations lack practical experience with cloud-native security solutions and struggle to implement effective web application protection. Traditional security measures often require complex configuration and may impact application performance, while third-party security solutions are costly and difficult to integrate.
 
 ### The Solution
-The platform uses AWS IoT Core to ingest MQTT data, AWS Lambda and API Gateway for processing, Amazon S3 for storage (including a data lake), and AWS Glue Crawlers and ETL jobs to extract, transform, and load data from the S3 data lake to another S3 bucket for analysis. AWS Amplify with Next.js provides the web interface, and Amazon Cognito ensures secure access. Similar to Thingsboard and CoreIoT, users can register new devices and manage connections, though this platform operates on a smaller scale and is designed for private use. Key features include real-time dashboards, trend analysis, and low operational costs.
+The workshop implements AWS WAF through comprehensive hands-on sections covering security rule configuration, testing methodologies, and performance optimization. AWS WAF integrates with Amazon CloudFront for global protection, AWS Lambda for automated processing, Amazon S3 for secure content delivery, and Amazon CloudWatch for real-time monitoring and analytics. Similar to enterprise security platforms, the solution provides centralized security management and automated threat detection, though this workshop focuses on practical implementation and is designed for educational use. Key features include managed rule deployment, custom security rules, bot control mechanisms, and comprehensive monitoring dashboards with cost-effective operational overhead.
 
 ### Benefits and Return on Investment
-The solution establishes a foundational resource for lab members to develop a larger IoT platform, serving as a study resource, and provides a data foundation for AI enthusiasts for model training or analysis. It reduces manual reporting for each station via a centralized platform, simplifying management and maintenance, and improves data reliability. Monthly costs are $0.66 USD per the AWS Pricing Calculator, with a 12-month total of $7.92 USD. All IoT equipment costs are covered by the existing weather station setup, eliminating additional development expenses. The break-even period of 6-12 months is achieved through significant time savings from reduced manual work.
+The workshop establishes a foundational resource for IT professionals to develop comprehensive web security skills, serving as a practical study resource, and provides hands-on experience for security engineers and developers. It reduces security implementation time through proven methodologies and best practices, simplifying deployment and maintenance, and improves overall security posture. Implementation costs are minimal using AWS Free Tier resources, with ongoing operational costs under $10 USD monthly for small-scale deployments. All security configurations are reusable templates, eliminating additional development expenses. The return on investment is immediate through enhanced security capabilities and reduced vulnerability exposure.
 
 ### 3. Solution Architecture
-The platform employs a serverless AWS architecture to manage data from 5 Raspberry Pi-based stations, scalable to 15. Data is ingested via AWS IoT Core, stored in an S3 data lake, and processed by AWS Glue Crawlers and ETL jobs to transform and load it into another S3 bucket for analysis. Lambda and API Gateway handle additional processing, while Amplify with Next.js hosts the dashboard, secured by Cognito. The architecture is detailed below:
+The workshop employs a comprehensive AWS security architecture integrating multiple protection layers. Security policies are implemented via AWS WAF, distributed globally through Amazon CloudFront, and monitored by AWS CloudWatch with automated processing handled by AWS Lambda. Static content is securely delivered through Amazon S3 integration. The architecture provides scalable protection for web applications with real-time threat detection and response capabilities. The architecture is detailed below:
 
-![IoT Weather Station Architecture](/images/2-Proposal/edge_architecture.jpeg)
+![AWS WAF WebACL Architecture](/images/2-Proposal/waf_webacl_architecture.png)
 
-![IoT Weather Platform Architecture](/images/2-Proposal/platform_architecture.jpeg)
+![AWS WAF Workshop Architecture](/images/2-Proposal/workshop_architecture.png)
 
 ### AWS Services Used
-- **AWS IoT Core**: Ingests MQTT data from 5 stations, scalable to 15.
-- **AWS Lambda**: Processes data and triggers Glue jobs (two functions).
-- **Amazon API Gateway**: Facilitates web app communication.
-- **Amazon S3**: Stores raw data in a data lake and processed outputs (two buckets).
-- **AWS Glue**: Crawlers catalog data, and ETL jobs transform and load it.
-- **AWS Amplify**: Hosts the Next.js web interface.
-- **Amazon Cognito**: Secures access for lab users.
+- **AWS WAF**: Core firewall service for rule implementation and security policies.
+- **Amazon CloudFront**: Content delivery network for WAF integration and global protection.
+- **AWS Lambda**: Serverless functions for automated processing and custom logic.
+- **Amazon S3**: Static content hosting and secure file storage.
+- **Amazon CloudWatch**: Monitoring and logging for security events and performance metrics.
 
 ### Component Design
-- **Edge Devices**: Raspberry Pi collects and filters sensor data, sending it to IoT Core.
-- **Data Ingestion**: AWS IoT Core receives MQTT messages from the edge devices.
-- **Data Storage**: Raw data is stored in an S3 data lake; processed data is stored in another S3 bucket.
-- **Data Processing**: AWS Glue Crawlers catalog the data, and ETL jobs transform it for analysis.
-- **Web Interface**: AWS Amplify hosts a Next.js app for real-time dashboards and analytics.
-- **User Management**: Amazon Cognito manages user access, allowing up to 5 active accounts.
+- **Security Rules**: AWS WAF implements managed and custom rules for comprehensive threat protection.
+- **Traffic Distribution**: Amazon CloudFront distributes content globally while applying security policies.
+- **Content Storage**: Amazon S3 hosts static web content with secure access controls.
+- **Automated Processing**: AWS Lambda functions handle security event processing and custom logic.
+- **Monitoring Dashboard**: Amazon CloudWatch provides real-time security metrics and alerting.
+- **Workshop Environment**: Integrated testing platform for hands-on security implementation practice.
 
 ### 4. Technical Implementation
 **Implementation Phases**
-This project has two parts—setting up weather edge stations and building the weather platform—each following 4 phases:
-- Build Theory and Draw Architecture: Research Raspberry Pi setup with ESP32 sensors and design the AWS serverless architecture (1 month pre-internship)
-- Calculate Price and Check Practicality: Use AWS Pricing Calculator to estimate costs and adjust if needed (Month 1).
-- Fix Architecture for Cost or Solution Fit: Tweak the design (e.g., optimize Lambda with Next.js) to stay cost-effective and usable (Month 2).
-- Develop, Test, and Deploy: Code the Raspberry Pi setup, AWS services with CDK/SDK, and Next.js app, then test and release to production (Months 2-3).
+This workshop has comprehensive security implementation covering foundational AWS services and advanced WAF configuration—following 4 structured phases:
+- Foundation Setup and AWS Fundamentals: Research core AWS services (EC2, S3, VPC, IAM) and design the security architecture (Weeks 1-4).
+- Security Assessment and Planning: Evaluate application vulnerabilities and plan WAF rule implementation strategy (Week 5).
+- WAF Configuration and Rule Deployment: Implement managed rules, custom rules, bot control, and rate limiting with testing (Week 6).
+- Validation, Testing, and Documentation: Conduct security testing, performance validation, and complete comprehensive documentation (Week 7).
 
 **Technical Requirements**
-- Weather Edge Station: Sensors (temperature, humidity, rainfall, wind speed), a microcontroller (ESP32), and a Raspberry Pi as the edge device. Raspberry Pi runs Raspbian, handles Docker for filtering, and sends 1 MB/day per station via MQTT over Wi-Fi.
-- Weather Platform: Practical knowledge of AWS Amplify (hosting Next.js), Lambda (minimal use due to Next.js), AWS Glue (ETL), S3 (two buckets), IoT Core (gateway and rules), and Cognito (5 users). Use AWS CDK/SDK to code interactions (e.g., IoT Core rules to S3). Next.js reduces Lambda workload for the fullstack web app.
+- Workshop Environment: AWS Free Tier account with access to WAF, CloudFront, Lambda, S3, and CloudWatch services. Participants need basic understanding of web applications and HTTP protocols for effective learning.
+- Security Platform: Practical knowledge of AWS WAF (rule configuration), CloudFront (distribution setup), Lambda (event processing), S3 (content hosting), and CloudWatch (monitoring dashboards). Use AWS Management Console and CLI for hands-on configuration. CloudFront integration reduces complexity while providing global WAF protection for web applications.
 
 ### 5. Timeline & Milestones
-**Project Timeline**
-- Pre-Internship (Month 0): 1 month for planning and old station review.
-- Internship (Months 1-3): 3 months.
-    - Month 1: Study AWS and upgrade hardware.
-    - Month 2: Design and adjust architecture.
-    - Month 3: Implement, test, and launch.
-- Post-Launch: Up to 1 year for research.
+**Workshop Timeline**
+- Pre-Workshop (Week 0): Preparation and AWS account setup with service access verification.
+- Workshop Implementation (Weeks 1-7): 7 weeks structured learning.
+    - Weeks 1-4: AWS fundamentals (EC2, S3, VPC, IAM) and infrastructure setup.
+    - Week 5: WAF workshop initiation and managed rules implementation.
+    - Week 6: Advanced WAF configuration with custom rules and bot control.
+    - Week 7: Testing, validation, and comprehensive documentation.
+- Post-Workshop: Ongoing security monitoring and rule optimization.
 
-### 6. Budget Estimation
-You can find the budget estimation on the [AWS Pricing Calculator](https://calculator.aws/#/estimate?id=621f38b12a1ef026842ba2ddfe46ff936ed4ab01).  
-Or you can download the [Budget Estimation File](../attachments/budget_estimation.pdf).
+### 6. Workshop Scope & Deliverables
+**Workshop Deliverables**
+- **Implementation Guide**: Step-by-step WAF configuration documentation with screenshots and examples.
+- **Security Configurations**: Complete rule sets and policy templates for production deployment.
+- **Testing Procedures**: Security validation methodologies and comprehensive test cases.
+- **Monitoring Setup**: CloudWatch dashboards and alerting configurations for security events.
+- **Best Practices Documentation**: Security recommendations and performance optimization guidelines.
 
-### Infrastructure Costs
-- AWS Services:
-    - AWS Lambda: $0.00/month (1,000 requests, 512 MB storage).
-    - S3 Standard: $0.15/month (6 GB, 2,100 requests, 1 GB scanned).
-    - Data Transfer: $0.02/month (1 GB inbound, 1 GB outbound).
-    - AWS Amplify: $0.35/month (256 MB, 500 ms requests).
-    - Amazon API Gateway: $0.01/month (2,000 requests).
-    - AWS Glue ETL Jobs: $0.02/month (2 DPUs).
-    - AWS Glue Crawlers: $0.07/month (1 crawler).
-    - MQTT (IoT Core): $0.08/month (5 devices, 45,000 messages).
+**Infrastructure Costs**
+- AWS Services (Free Tier Usage):
+    - AWS WAF: $0.60/month (1 million requests, 10 rules).
+    - Amazon CloudFront: $0.085/month (1 GB data transfer).
+    - AWS Lambda: $0.00/month (1,000 requests within free tier).
+    - Amazon S3: $0.023/month (1 GB storage, 2,000 requests).
+    - Amazon CloudWatch: $0.30/month (10 metrics, 1,000 API requests).
 
-Total: $0.7/month, $8.40/12 months
+Total: ~$1.00/month for workshop environment
 
-- Hardware: $265 one-time (Raspberry Pi 5 and sensors).
+### 7. Success Metrics & Evaluation
+**Technical Metrics**
+- **Configuration Completeness**: Successful implementation of all workshop sections with documented results.
+- **Security Effectiveness**: Validation of protection against common attack vectors through controlled testing.
+- **Performance Impact**: Measurement of latency and throughput with security policies enabled.
+- **Monitoring Coverage**: Complete security event tracking and alerting system implementation.
 
-### 7. Risk Assessment
-#### Risk Matrix
-- Network Outages: Medium impact, medium probability.
-- Sensor Failures: High impact, low probability.
-- Cost Overruns: Medium impact, low probability.
+**Learning Outcomes**
+- **Practical Skills**: Hands-on WAF configuration and management capabilities for production environments.
+- **Security Knowledge**: Comprehensive understanding of web application threat landscape and protection strategies.
+- **AWS Expertise**: Proficiency with cloud-native security services and their integration patterns.
+- **Documentation Quality**: Professional implementation guides and security best practices documentation.
 
-#### Mitigation Strategies
-- Network: Local storage on Raspberry Pi with Docker.
-- Sensors: Regular checks and spares.
-- Cost: AWS budget alerts and optimization.
+### 8. Expected Outcomes & Impact
+**Technical Skills Development**
+- **WAF Configuration**: Hands-on experience with AWS WAF setup, rule management, and optimization.
+- **Security Implementation**: Practical knowledge of web application protection strategies and threat mitigation.
+- **Monitoring Expertise**: CloudWatch integration skills for security event analysis and incident response.
+- **Performance Optimization**: Balancing security effectiveness with application performance requirements.
 
-#### Contingency Plans
-- Revert to manual methods if AWS fails.
-- Use CloudFormation for cost-related rollbacks.
-
-### 8. Expected Outcomes
-#### Technical Improvements: 
-Real-time data and analytics replace manual processes.  
-Scalable to 10-15 stations.
-#### Long-term Value
-1-year data foundation for AI research.  
-Reusable for future projects.
+**Long-term Value**
+- **Production Readiness**: Skills directly applicable to real-world security implementations and enterprise environments.
+- **Career Development**: Industry-recognized cloud security expertise for professional advancement opportunities.
+- **Security Best Practices**: Comprehensive understanding of defense-in-depth strategies for web applications.
+- **Continuous Learning**: Foundation for advanced security topics and AWS certification pathways.
