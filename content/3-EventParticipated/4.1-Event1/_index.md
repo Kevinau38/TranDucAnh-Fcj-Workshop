@@ -5,117 +5,108 @@ weight: 1
 chapter: false
 pre: " <b> 4.1. </b> "
 ---
-# Summary Report: “AWS re:Invent Recap HCMC”
+# Summary Report: "AWS re:Invent Recap HCMC"
 
 ### Event Objectives
 
-- Share best practices in modern application design
-- Introduce Domain-Driven Design (DDD) and event-driven architecture
-- Provide guidance on selecting the right compute services
-- Present AI tools to support the development lifecycle
+- Share the latest AWS innovations and product releases from re:Invent 2025
+- Provide deep dives into AI/ML services and infrastructure modernization
+- Demonstrate hands-on workshops and technical sessions
+- Foster networking with cloud enthusiasts and AWS experts
 
 ### Speakers
 
-- **Jignesh Shah** – Director, Open Source Databases
-- **Erica Liu** – Sr. GTM Specialist, AppMod
-- **Fabrianne Effendi** – Assc. Specialist SA, Serverless Amazon Web Services
+- **AWS Solutions Architects** – Infrastructure & Application Modernization Track
+- **AWS AI/ML Specialists** – Analytics/ML/AI & Innovation Track
+- **AWS Leadership Team** – Strategic keynotes and product announcements
 
 ### Key Highlights
 
-#### Identifying the drawbacks of legacy application architecture
+#### Infrastructure & Application Modernization Track
 
-- Long product release cycles → Lost revenue/missed opportunities  
-- Inefficient operations → Reduced productivity, higher costs  
-- Non-compliance with security regulations → Security breaches, loss of reputation  
+- **Hybrid Cloud & Multi-Cloud Strategy** → Flexible deployment options across environments
+- **Container-Based Applications** → Simplified deployment and management on AWS
+- **Purpose-Built Databases** → Optimized workload performance with specialized database services
+- **AI-Powered Modernization** → AWS Transform & Kiro for automated application updates
+- **Intelligent Security** → Advanced threat detection and system protection
+- **Vietnam DirectConnect POP** → New infrastructure expansion announcement
 
-#### Transitioning to modern application architecture – Microservices
+#### Analytics/ML/AI & Innovation Track
 
-Migrating to a modular system — each function is an **independent service** communicating via **events**, built on three core pillars:
-
-- **Queue Management**: Handle asynchronous tasks  
-- **Caching Strategy**: Optimize performance  
-- **Message Handling**: Flexible inter-service communication  
-
-#### Domain-Driven Design (DDD)
-
-- **Four-step method**: Identify domain events → arrange timeline → identify actors → define bounded contexts  
-- **Bookstore case study**: Demonstrates real-world DDD application  
-- **Context mapping**: 7 patterns for integrating bounded contexts  
-
-#### Event-Driven Architecture
-
-- **3 integration patterns**: Publish/Subscribe, Point-to-point, Streaming  
-- **Benefits**: Loose coupling, scalability, resilience  
-- **Sync vs async comparison**: Understanding the trade-offs  
-
-#### Compute Evolution
-
-- **Shared Responsibility Model**: EC2 → ECS → Fargate → Lambda  
-- **Serverless benefits**: No server management, auto-scaling, pay-for-value  
-- **Functions vs Containers**: Criteria for appropriate choice  
-
-#### Amazon Q Developer
-
-- **SDLC automation**: From planning to maintenance  
-- **Code transformation**: Java upgrade, .NET modernization  
-- **AWS Transform agents**: VMware, Mainframe, .NET migration  
+- **Vector Database on S3** → Scalable AI data storage and retrieval solutions
+- **Natural Query Language in OpenSearch** → Simplified search and analytics capabilities
+- **Enhanced GenAI with Nova & Bedrock** → Latest foundation models and AI services
+- **AWS Resources through MCP** → Model Context Protocol for improved AI interactions
+- **Multimodal Retrieval** → Advanced knowledge base capabilities for Bedrock
+- **MLOps with SageMaker** → Scalable model training and deployment strategies
 
 ### Key Takeaways
 
-#### Design Mindset
+#### AI/ML Innovation
 
-- **Business-first approach**: Always start from the business domain, not the technology  
-- **Ubiquitous language**: Importance of a shared vocabulary between business and tech teams  
-- **Bounded contexts**: Identifying and managing complexity in large systems  
+- **Foundation Models**: Nova represents the next generation of AWS AI capabilities
+- **Bedrock Enhancements**: Improved performance and new features for GenAI applications
+- **Vector Databases**: S3-based solutions for AI workload optimization
+- **MLOps at Scale**: SageMaker provides comprehensive model lifecycle management
 
-#### Technical Architecture
+#### Infrastructure Modernization
 
-- **Event storming technique**: Practical method for modeling business processes  
-- Use **event-driven communication** instead of synchronous calls  
-- **Integration patterns**: When to use sync, async, pub/sub, streaming  
-- **Compute spectrum**: Criteria for choosing between VM, containers, and serverless  
+- **Container Strategy**: Simplified application deployment and management approaches
+- **Database Optimization**: Purpose-built databases for specific workload requirements
+- **Security Intelligence**: Automated threat detection and response capabilities
+- **Regional Expansion**: Vietnam DirectConnect POP enhances local connectivity
 
-#### Modernization Strategy
+#### Strategic Implementation
 
-- **Phased approach**: No rushing — follow a clear roadmap  
-- **7Rs framework**: Multiple modernization paths depending on the application  
-- **ROI measurement**: Cost reduction + business agility  
+- **Hybrid Approach**: Multi-cloud strategies for enterprise flexibility
+- **AI Integration**: Practical approaches to incorporating GenAI into existing systems
+- **Performance Optimization**: Database and application tuning for cloud environments
+- **Automation Tools**: AI-powered modernization for legacy system updates
 
 ### Applying to Work
 
-- **Apply DDD** to current projects: Event storming sessions with business teams  
-- **Refactor microservices**: Use bounded contexts to define service boundaries  
-- **Implement event-driven patterns**: Replace some sync calls with async messaging  
-- **Adopt serverless**: Pilot AWS Lambda for suitable use cases  
-- **Try Amazon Q Developer**: Integrate into the dev workflow to boost productivity  
+- **Implement Vector Databases**: Explore S3-based solutions for AI data storage in current projects
+- **Adopt Nova Models**: Pilot new foundation models for enhanced GenAI capabilities
+- **Modernize Applications**: Apply container strategies and purpose-built databases
+- **Enhance Security**: Implement intelligent detection systems for better protection
+- **Leverage MLOps**: Use SageMaker for scalable model training and deployment
 
 ### Event Experience
 
-Attending the **“GenAI-powered App-DB Modernization”** workshop was extremely valuable, giving me a comprehensive view of modernizing applications and databases using advanced methods and tools. Key experiences included:
+Attending the **"AWS re:Invent Recap HCMC"** was extremely valuable, providing comprehensive insights into the latest AWS innovations and practical implementation strategies. Key experiences included:
 
-#### Learning from highly skilled speakers
-- Experts from AWS and major tech organizations shared **best practices** in modern application design.  
-- Through real-world case studies, I gained a deeper understanding of applying **DDD** and **Event-Driven Architecture** to large projects.  
+#### Learning from AWS experts
+- Solutions Architects and specialists shared **best practices** from re:Invent 2025 announcements
+- Through real-world demonstrations, I gained deeper understanding of **AI/ML integration** and **infrastructure modernization** strategies
 
 #### Hands-on technical exposure
-- Participating in **event storming** sessions helped me visualize how to **model business processes** into domain events.  
-- Learned how to **split microservices** and define **bounded contexts** to manage large-system complexity.  
-- Understood trade-offs between **synchronous and asynchronous communication** and integration patterns like **pub/sub, point-to-point, streaming**.  
+- Participating in **technical sessions** helped me understand how to implement **vector databases** and **GenAI applications**
+- Learned about **container deployment strategies** and **purpose-built database** selection criteria
+- Understood the benefits of **MLOps practices** and **automated model training** with SageMaker
 
-#### Leveraging modern tools
-- Explored **Amazon Q Developer**, an AI tool for SDLC support from planning to maintenance.  
-- Learned to **automate code transformation** and pilot serverless with **AWS Lambda** to improve productivity.  
+#### Exploring cutting-edge technologies
+- Discovered **Nova foundation models** and enhanced **Bedrock capabilities** for advanced AI applications
+- Learned about **Model Context Protocol (MCP)** for improved AI resource interactions
+- Explored **multimodal retrieval** techniques for knowledge base implementations
 
-#### Networking and discussions
-- The workshop offered opportunities to exchange ideas with experts, peers, and business teams, enhancing the **ubiquitous language** between business and tech.  
-- Real-world examples reinforced the importance of the **business-first approach** rather than focusing solely on technology.  
+#### Networking and knowledge sharing
+- The event provided opportunities to connect with **AWS experts**, **local cloud professionals**, and **fellow developers**
+- Real-world case studies demonstrated the importance of **strategic AI implementation** and **infrastructure planning**
 
-#### Lessons learned
-- Applying DDD and event-driven patterns reduces **coupling** while improving **scalability** and **resilience**.  
-- Modernization requires a **phased approach** with **ROI measurement**; rushing the process can be risky.  
-- AI tools like Amazon Q Developer can significantly **boost productivity** when integrated into the current workflow.  
+#### Strategic insights
+- Understanding **hybrid cloud strategies** and **multi-cloud deployment** approaches for enterprise environments
+- Learning about **Vietnam's cloud infrastructure expansion** with the new DirectConnect POP announcement
+- Gaining insights into **AI-powered modernization** tools and **automated transformation** capabilities
+
+#### Technical skills development
+- Enhanced knowledge of **vector database implementations** and **AI workload optimization**
+- Improved understanding of **container orchestration** and **serverless AI processing**
+- Learned about **intelligent security systems** and **automated threat detection** mechanisms
 
 #### Some event photos
-*Add your event photos here*  
 
-> Overall, the event not only provided technical knowledge but also helped me reshape my thinking about application design, system modernization, and cross-team collaboration.
+![AWS re:Invent Recap HCMC Event Photo 1](/images/3-Events/aws_reinvent_recap_hcmc_1.jpg)
+
+![AWS re:Invent Recap HCMC Event Photo 2](/images/3-Events/aws_reinvent_recap_hcmc_2.jpg)
+
+> Overall, the event not only provided cutting-edge technical knowledge but also helped me understand the strategic direction of cloud computing, AI innovation, and the practical steps needed to implement these technologies in real-world scenarios.
