@@ -57,8 +57,9 @@ cat waf-workshop.yaml
 
 Create a script to automate the CloudFormation stack deployment:
 
-bash
+```
 nano deploy-workshop-own-account.sh
+```
 
 The script performs the following functions:
 - Checks if template file exists
@@ -68,56 +69,55 @@ The script performs the following functions:
 
 Make the script executable:
 
-bash
+```
 chmod +x deploy-workshop-own-account.sh
+```
 
 Verify the files:
 
-bash
+```
 ls -lh
+```
 
-![Working directory with files](/images/4-Workshop/4.2-Preparation/hinh_2_6.png)
-*Hình 2.6: Thư mục làm việc với 2 files*
+![Working directory with files](/images/5-Workshop/5.2-Prerequisite/diagram6.png)
 
 #### Deploy CloudFormation Stack
 
 Run the deployment script:
 
-bash
+```
 ./deploy-workshop-own-account.sh
+```
 
-![Script execution started](/images/4-Workshop/4.2-Preparation/hinh_2_7.png)
-*Hình 2.7: Script bắt đầu chạy và tạo CloudFormation stack*
+![Script execution started](/images/5-Workshop/5.2-Prerequisite/diagram7.png)
 
-![Waiting for stack creation](/images/4-Workshop/4.2-Preparation/hinh_2_8.png)
-*Hình 2.8: Đợi stack creation hoàn tất (10-15 phút)*
+![Waiting for stack creation](/images/5-Workshop/5.2-Prerequisite/diagram8.png)
 
 #### Troubleshooting Deployment Errors
 
 If the stack creation fails:
 
-![Stack creation failed](/images/4-Workshop/4.2-Preparation/hinh_2_9.png)
-*Hình 2.9: Stack creation failed với status ROLLBACK_COMPLETE*
+![Stack creation failed](/images/5-Workshop/5.2-Prerequisite/diagram9.png)
 
 Check error details:
 
-bash
+```
 aws cloudformation describe-stack-events \
  --stack-name waf-workshop \
  --region ap-southeast-1 \
  --max-items 20 \
  --query 'StackEvents[?ResourceStatus==CREATE_FAILED].[LogicalResourceId,ResourceStatusReason]' \
  --output table
+```
 
-![CloudFormation error details](/images/4-Workshop/4.2-Preparation/hinh_2_10.png)
-*Hình 2.10: Chi tiết lỗi CloudFormation - WAF với scope CLOUDFRONT không thể tạo ở ap-southeast-1*
+![CloudFormation error details](/images/5-Workshop/5.2-Prerequisite/diagram10.png)
 
 **Error Resolution:**
 WAF Web ACL with CLOUDFRONT scope can only be created in us-east-1 region. Delete the failed stack and modify the template.
 
 Delete failed stack:
 
-bash
+```
 aws cloudformation delete-stack \
  --stack-name waf-workshop \
  --region ap-southeast-1
@@ -125,27 +125,28 @@ aws cloudformation delete-stack \
 aws cloudformation wait stack-delete-complete \
  --stack-name waf-workshop \
  --region ap-southeast-1
+```
 
 Edit the template:
 
-bash
+```
 nano waf-workshop.yaml
+```
 
-![Edit template - part 1](/images/4-Workshop/4.2-Preparation/hinh_2_11.png)
-*Hình 2.11: Sửa template trong nano editor (phần đầu)*
+![Edit template - part 1](/images/5-Workshop/5.2-Prerequisite/diagram11.png)
 
-![Edit template - part 2](/images/4-Workshop/4.2-Preparation/hinh_2_12.png)
-*Hình 2.12: Sửa template trong nano editor (phần cuối - Outputs)*
+![Edit template - part 2](/images/5-Workshop/5.2-Prerequisite/diagram12.png)
+
 
 #### Successful Deployment
 
 After fixing the template, run the deployment script again:
 
-bash
+```
 ./deploy-workshop-own-account.sh
+```
 
-![Stack created successfully](/images/4-Workshop/4.2-Preparation/hinh_2_13.png)
-*Hình 2.13: Stack created successfully với Stack Outputs*
+![Stack created successfully](/images/5-Workshop/5.2-Prerequisite/diagram13.png)
 
 Stack outputs include:
 - **WebsiteURL**: S3 static website URL
@@ -156,23 +157,19 @@ Stack outputs include:
 
 Check CloudFormation Console:
 
-![CloudFormation Console](/images/4-Workshop/4.2-Preparation/hinh_2_14.png)
-*Hình 2.14: CloudFormation Console hiển thị stack waf-workshop với status CREATE_COMPLETE*
+![CloudFormation Console](/images/5-Workshop/5.2-Prerequisite/diagram14.png)
 
-![Stack Outputs on Console](/images/4-Workshop/4.2-Preparation/hinh_2_15.png)
-*Hình 2.15: Stack Outputs trên AWS Console*
+![Stack Outputs on Console](/images/5-Workshop/5.2-Prerequisite/diagram15.png)
 
 Access the S3 website URL:
 
-![S3 Website URL](/images/4-Workshop/4.2-Preparation/hinh_2_16.png)
-*Hình 2.16: S3 Website URL (có thể hiển thị 404 vì chưa upload index.html)*
+![S3 Website URL](/images/5-Workshop/5.2-Prerequisite/diagram16.png)
 
 #### Workshop Architecture
 
 The workshop architecture includes the following components:
 
-![Workshop Architecture](/images/4-Workshop/4.2-Preparation/hinh_2_17.png)
-*Hình 2.17: Kiến trúc AWS WAF Workshop*
+![Workshop Architecture](/images/5-Workshop/5.2-Prerequisite/diagram17.png)
 
 **Key Components:**
 - **Amazon CloudFront**: Global content delivery with WAF integration
@@ -185,56 +182,49 @@ The workshop architecture includes the following components:
 
 Create a WAF Web ACL in us-east-1 region (required for CloudFront scope):
 
-![Create WAF Web ACL](/images/4-Workshop/4.2-Preparation/hinh_2_18.png)
-*Hình 2.18: Lệnh tạo WAF Web ACL với visibility config và response JSON*
+![Create WAF Web ACL](/images/5-Workshop/5.2-Prerequisite/diagram18.png)
 
 #### Create CloudFront Distribution
 
 Create a CloudFront distribution integrated with the WAF Web ACL:
 
-![Create CloudFront Distribution](/images/4-Workshop/4.2-Preparation/hinh_2_19.png)
-*Hình 2.19: CloudFront create-distribution response với Distribution ID*
+![Create CloudFront Distribution](/images/5-Workshop/5.2-Prerequisite/diagram19.png)
 
 Wait for distribution deployment:
 
-![Wait for CloudFront deployment](/images/4-Workshop/4.2-Preparation/hinh_2_20.png)
-*Hình 2.20: CloudFront wait distribution-deployed thành công*
+![Wait for CloudFront deployment](/images/5-Workshop/5.2-Prerequisite/diagram20.png)
 
 #### Verify Deployment
 
 Check CloudFront Distribution on Console:
 
-![CloudFront Console](/images/4-Workshop/4.2-Preparation/hinh_2_21.png)
-*Hình 2.21: CloudFront Console hiển thị Distribution với status Enabled*
+![CloudFront Console](/images/5-Workshop/5.2-Prerequisite/diagram21.png)
 
 Check WAF Web ACL on Console:
 
-![WAF Console](/images/4-Workshop/4.2-Preparation/hinh_2_22.png)
-*Hình 2.22: AWS WAF Console hiển thị waf-workshop-webacl*
+![WAF Console](/images/5-Workshop/5.2-Prerequisite/diagram22.png)
 
 Access CloudFront domain:
 
-![CloudFront domain response](/images/4-Workshop/4.2-Preparation/hinh_2_23.png)
-*Hình 2.23: CloudFront domain trả về XML response với Access Denied message*
+![CloudFront domain response](/images/5-Workshop/5.2-Prerequisite/diagram23.png)
 
 Check CloudFormation Stack Outputs:
 
-![CloudFormation Stack Outputs](/images/4-Workshop/4.2-Preparation/hinh_2_24.png)
-*Hình 2.24: CloudFormation describe-stacks outputs hiển thị 3 thông tin chính*
+![CloudFormation Stack Outputs](/images/5-Workshop/5.2-Prerequisite/diagram24.png)
 
 #### Initial Security Assessment
 
 Check current WAF Web ACL status:
 
-bash
+```
 aws wafv2 get-web-acl \
  --id <WEB_ACL_ID> \
  --name waf-workshop-webacl \
  --scope CLOUDFRONT \
  --region us-east-1
+```
 
-![WAF Web ACL status](/images/4-Workshop/4.2-Preparation/hinh_2_25.png)
-*Hình 2.25: WAF Web ACL chưa có rules bảo vệ - Rules array trống*
+![WAF Web ACL status](/images/5-Workshop/5.2-Prerequisite/diagram25.png)
 
 Current state:
 - **DefaultAction**: Allow (permits all traffic)
@@ -245,13 +235,13 @@ Current state:
 
 Create a baseline security testing script:
 
-bash
+```
 nano test-security-baseline.sh
 chmod +x test-security-baseline.sh
 ./test-security-baseline.sh
+```
 
-![Baseline Testing Results](/images/4-Workshop/4.2-Preparation/hinh_2_26.png)
-*Hình 2.26: Baseline testing results - Legitimate traffic và attack simulation*
+![Baseline Testing Results](/images/5-Workshop/5.2-Prerequisite/diagram26.png)
 
 **Baseline Testing Results:**
 - Legitimate Traffic: All requests return 403 Forbidden
@@ -262,13 +252,13 @@ chmod +x test-security-baseline.sh
 
 Create a detailed attack testing script:
 
-bash
+```
 nano detailed-attack-test.sh
 chmod +x detailed-attack-test.sh
 ./detailed-attack-test.sh
+```
 
-![Detailed Attack Testing](/images/4-Workshop/4.2-Preparation/hinh_2_27.png)
-*Hình 2.27: Detailed attack testing - 10 attack vectors với kết quả 403/000*
+![Detailed Attack Testing](/images/5-Workshop/5.2-Prerequisite/diagram27.png)
 
 **Detailed Attack Results:**
 
@@ -287,8 +277,7 @@ chmod +x detailed-attack-test.sh
 
 Check CloudWatch metrics to verify WAF behavior and traffic patterns:
 
-![CloudWatch Metrics](/images/4-Workshop/4.2-Preparation/hinh_2_28.png)
-*Hình 2.28: CloudWatch metrics cho WAF - chỉ có allowed requests, chưa có blocked requests*
+![CloudWatch Metrics](/images/5-Workshop/5.2-Prerequisite/diagram28.png)
 
 **Metrics Analysis:**
 - **AllowedRequests**: Traffic passing through WAF (all allowed)
