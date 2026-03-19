@@ -14,8 +14,8 @@ pre: " <b> 1. </b> "
 
 **Week 4:** [Identity & Security](1.4-week4/)
 
-**Week 5:** [Doing task D...](1.5-week5/)
+**Week 5:** [AWS WAF Fundamentals](1.5-week5/)
 
-**Week 6:** [Doing task E...](1.6-week6/)
+**Week 6:** [WAF Implementation & Testing](1.6-week6/)
 
-**Week 7:** [Doing task F...](1.7-week7/)
+**Week 7:** [Advanced WAF Features & Workshop](1.7-week7/)

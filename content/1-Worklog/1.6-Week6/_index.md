@@ -5,53 +5,52 @@ weight: 6
 chapter: false
 pre: " <b> 1.6. </b> "
 ---
-{{% notice warning %}} 
-⚠️ **Note:** The following information is for reference purposes only. Please **do not copy verbatim** for your own report, including this warning.
-{{% /notice %}}
-
 
 ### Week 6 Objectives:
 
-* Connect and get acquainted with members of First Cloud Journey.
-* Understand basic AWS services, how to use the console & CLI.
+* Implement AWS WAF infrastructure using CloudFormation.
+* Deploy and configure AWS Managed Rules for OWASP protection.
+* Create custom WAF rules for specific application protection.
+* Test WAF effectiveness against common web attacks.
+* Monitor and analyze WAF logs and metrics.
 
 ### Tasks to be carried out this week:
 | Day | Task                                                                                                                                                                                                   | Start Date | Completion Date | Reference Material                        |
 | --- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ---------- | --------------- | ----------------------------------------- |
-| 2   | - Get acquainted with FCJ members <br> - Read and take note of internship unit rules and regulations                                                                                                   | 08/11/2025 | 08/11/2025      |
-| 3   | - Learn about AWS and its types of services <br>&emsp; + Compute <br>&emsp; + Storage <br>&emsp; + Networking <br>&emsp; + Database <br>&emsp; + ... <br>                                              | 08/12/2025 | 08/12/2025      | <https://cloudjourney.awsstudygroup.com/> |
-| 4   | - Create AWS Free Tier account <br> - Learn about AWS Console & AWS CLI <br> - **Practice:** <br>&emsp; + Create AWS account <br>&emsp; + Install & configure AWS CLI <br> &emsp; + How to use AWS CLI | 08/13/2025 | 08/13/2025      | <https://cloudjourney.awsstudygroup.com/> |
-| 5   | - Learn basic EC2: <br>&emsp; + Instance types <br>&emsp; + AMI <br>&emsp; + EBS <br>&emsp; + ... <br> - SSH connection methods to EC2 <br> - Learn about Elastic IP   <br>                            | 08/14/2025 | 08/15/2025      | <https://cloudjourney.awsstudygroup.com/> |
-| 6   | - **Practice:** <br>&emsp; + Launch an EC2 instance <br>&emsp; + Connect via SSH <br>&emsp; + Attach an EBS volume                                                                                     | 08/15/2025 | 08/15/2025      | <https://cloudjourney.awsstudygroup.com/> |
-
+| 2   | - Create CloudFormation template for WAF infrastructure. <br> - Deploy S3 bucket, CloudFront distribution, and Lambda function. <br> - Set up basic web application for testing. <br> - Configure CloudWatch logging.                                                                      | 09/03/2026 | 09/03/2026      | <https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/template-anatomy.html> <br> <https://docs.aws.amazon.com/waf/latest/developerguide/logging.html> |
+| 3   | - Create AWS WAF Web ACL. <br> - Deploy AWS Managed Rules: <br>&emsp; + Core Rule Set <br>&emsp; + Known Bad Inputs <br>&emsp; + SQL Database <br> - Associate Web ACL with CloudFront distribution.                                               | 10/03/2026 | 10/03/2026      | <https://docs.aws.amazon.com/waf/latest/developerguide/web-acl-creating.html> <br> <https://docs.aws.amazon.com/waf/latest/developerguide/aws-managed-rule-groups.html> |
+| 4   | - Test SQL injection protection: <br>&emsp; + Craft malicious SQL payloads <br>&emsp; + Verify WAF blocking behavior <br>&emsp; + Analyze blocked request logs <br> - Test XSS protection with various attack vectors.                                                    | 11/03/2026 | 11/03/2026      | <https://docs.aws.amazon.com/waf/latest/developerguide/waf-rule-statement-type-sqli-match.html> <br> <https://docs.aws.amazon.com/waf/latest/developerguide/waf-rule-statement-type-xss-match.html> |
+| 5   | - Create custom WAF rules: <br>   + Path-based protection rules <br>   + IP-based blocking rules <br>   + Geographic restrictions <br>   + User-agent filtering <br> - Configure rule priorities and actions.                                 | 12/03/2026 | 12/03/2026      | <https://docs.aws.amazon.com/waf/latest/developerguide/waf-rules.html> <br> <https://docs.aws.amazon.com/waf/latest/developerguide/waf-rule-statements.html> |
+| 6   | - **Monitoring & Analysis:** <br>   + Set up CloudWatch dashboards for WAF metrics. <br>   + Configure WAF log analysis. <br>   + Create alerts for security events. <br>   + Document test results and rule effectiveness.                                  | 13/03/2026 | 13/03/2026      | <https://docs.aws.amazon.com/waf/latest/developerguide/monitoring-cloudwatch.html> <br> <https://docs.aws.amazon.com/waf/latest/developerguide/logging-management.html> |
 
 ### Week 6 Achievements:
 
-* Understood what AWS is and mastered the basic service groups: 
-  * Compute
-  * Storage
-  * Networking 
-  * Database
-  * ...
+* **Successfully deployed WAF infrastructure:**
+  * Created comprehensive CloudFormation template for workshop environment.
+  * Deployed S3 bucket with static website hosting configuration.
+  * Set up CloudFront distribution with custom domain and SSL.
+  * Configured Lambda function for dynamic content generation.
 
-* Successfully created and configured an AWS Free Tier account.
+* **Implemented AWS Managed Rules protection:**
+  * Created Web ACL with proper rule evaluation order.
+  * Deployed Core Rule Set for OWASP Top 10 protection.
+  * Configured Known Bad Inputs rule group for malicious payload detection.
+  * Implemented SQL Database rule group for injection attack prevention.
 
-* Became familiar with the AWS Management Console and learned how to find, access, and use services via the web interface.
+* **Validated security effectiveness through testing:**
+  * Conducted SQL injection attacks and verified blocking behavior.
+  * Tested XSS payloads across different attack vectors.
+  * Analyzed WAF logs to understand rule matching patterns.
+  * Documented attack signatures and WAF response actions.
 
-* Installed and configured AWS CLI on the computer, including:
-  * Access Key
-  * Secret Key
-  * Default Region
-  * ...
+* **Created advanced custom protection rules:**
+  * Implemented path-based rules to protect sensitive directories.
+  * Created IP-based blocking for known malicious sources.
+  * Configured geographic restrictions for compliance requirements.
+  * Set up user-agent filtering to block automated tools.
 
-* Used AWS CLI to perform basic operations such as:
-
-  * Check account & configuration information
-  * Retrieve the list of regions
-  * View EC2 service
-  * Create and manage key pairs
-  * Check information about running services
-  * ...
-
-* Acquired the ability to connect between the web interface and CLI to manage AWS resources in parallel.
-* ...
+* **Established comprehensive monitoring:**
+  * Built CloudWatch dashboards for real-time WAF metrics.
+  * Configured log streaming to CloudWatch Logs for analysis.
+  * Set up automated alerts for high-risk security events.
+  * Created documentation for ongoing security monitoring procedures.
