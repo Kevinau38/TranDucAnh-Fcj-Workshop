@@ -6,28 +6,28 @@ chapter: false
 pre: " <b> 4. </b> "
 ---
 
-{{% notice warning %}}
-⚠️ **Lưu ý:** Các thông tin dưới đây chỉ nhằm mục đích tham khảo, vui lòng **không sao chép nguyên văn** cho bài báo cáo của bạn kể cả warning này.
-{{% /notice %}}
+# Tăng cường khả năng phòng thủ cho ứng dụng web của bạn bằng AWS WAF
 
+#### Chào mừng!
 
-# Đảm bảo truy cập Hybrid an toàn đến S3 bằng cách sử dụng VPC endpoint
+Trong workshop này, bạn sẽ có được kinh nghiệm thực hành và kỹ năng để bảo mật ứng dụng web của mình bằng cách sử dụng AWS WAF.
 
-#### Tổng quan
+Có nhiều biện pháp kiểm soát bảo mật được xây dựng để bảo vệ ứng dụng web của bạn, thông qua việc học các nội dung sau:
 
-**AWS PrivateLink** cung cấp kết nối riêng tư đến các dịch vụ aws từ VPCs hoặc trung tâm dữ liệu (on-premise) mà không làm lộ lưu lượng truy cập ra ngoài public internet.
+- **Giảm thiểu các mối đe dọa phổ biến**: Nắm bắt các khái niệm cơ bản về các cuộc tấn công web phổ biến (ví dụ: SQLi và XSS) và cách đối phó với chúng.
+- **Kỹ thuật nâng cao**: Khám phá các kỹ thuật nâng cao như custom HTTP response, Bot Control và phân tích JSON.
+- **Giám sát web payload**: Sử dụng AWS WAF logs để phân tích các mẫu traffic và sự kiện bảo mật.
 
-Trong bài lab này, chúng ta sẽ học cách tạo, cấu hình, và kiểm tra VPC endpoints để cho phép workload của bạn tiếp cận các dịch vụ AWS mà không cần đi qua Internet công cộng.
+#### Về workshop
 
-Chúng ta sẽ tạo hai loại endpoints để truy cập đến Amazon S3: gateway vpc endpoint và interface vpc endpoint. Hai loại vpc endpoints này mang đến nhiều lợi ích tùy thuộc vào việc bạn truy cập đến S3 từ môi trường cloud hay từ trung tâm dữ liệu (on-premise).
-+ **Gateway** - Tạo gateway endpoint để gửi lưu lượng đến Amazon S3 hoặc DynamoDB using private IP addresses. Bạn điều hướng lưu lượng từ VPC của bạn đến gateway endpoint bằng các bảng định tuyến (route tables)
-+ **Interface** - Tạo interface endpoint để gửi lưu lượng đến các dịch vụ điểm cuối (endpoints) sử dụng Network Load Balancer để phân phối lưu lượng. Lưu lượng dành cho dịch vụ điểm cuối được resolved bằng DNS.
+Cấp độ của workshop này là 300, hướng đến các kỹ thuật viên IT đã quen thuộc với các dịch vụ AWS cơ bản. Phải mất khoảng 2-3 giờ để hoàn thành tất cả các nhiệm vụ trong workshop này.
 
-#### Nội dung
+#### Các module
 
-1. [Tổng quan về workshop](5.1-Workshop-overview/)
-2. [Chuẩn bị](5.2-Prerequiste/)
-3. [Truy cập đến S3 từ VPC](5.3-S3-vpc/)
-4. [Truy cập đến S3 từ TTDL On-premises](5.4-S3-onprem/)
-5. [VPC Endpoint Policies (làm thêm)](5.5-Policy/)
-6. [Dọn dẹp tài nguyên](5.6-Cleanup/)
+Workshop này được chia thành:
+
+1. [Giới thiệu](4.1-Workshop-overview/)
+2. [Chuẩn bị](4.2-Preparation/)
+3. [Khắc phục](4.3-S3-vpc/)
+4. [Giám sát](4.4-S3-onprem/)
+5. [Dọn dẹp](4.5-Cleanup/)
