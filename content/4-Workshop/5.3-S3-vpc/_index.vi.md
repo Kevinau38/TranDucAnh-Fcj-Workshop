@@ -1,9 +1,9 @@
 ---
-title : "Truy cập S3 từ VPC"
+title : "Khắc Phục"
 date : 2024-01-01 
 weight : 3
 chapter : false
-pre : " <b> 5.3. </b> "
+pre : " <b> 4.3. </b> "
 ---
 
 #### Sử dụng Gateway endpoint
