@@ -25,7 +25,7 @@ pre: " <b> 1.5. </b> "
 
 ### Week 5 Achievements:
 
-* **Mastered AWS WAF fundamentals:**
+* **Understood AWS WAF fundamentals:**
   * Understood WAF architecture and deployment models.
   * Learned how AWS WAF integrates with CloudFront, ALB, and API Gateway.
   * Studied WAF vs traditional firewall differences.

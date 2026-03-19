@@ -5,7 +5,9 @@ weight: 1
 chapter: false
 ---
 
+    
 # Báo cáo thực tập
+
 ### Thông tin sinh viên:
 &emsp; **Họ và tên:** Trần Đức Anh
 
@@ -21,13 +23,11 @@ chapter: false
 
 &emsp; **Công ty thực tập:** Công ty TNHH Amazon Web Services Vietnam
 
-&emsp; **Vị trí thực tập:** FCJ Cloud Intern
+&emsp; **Vị trí thực tập:** FCAJ Cloud Intern
 
 &emsp; **Thời gian thực tập:** Từ ngày 12/01/2026 đến ngày 21/03/2026
 
 ![Ảnh đại diện của bạn](/images/Avatar.png)
-
-
 
 ### Nội dung báo cáo
 

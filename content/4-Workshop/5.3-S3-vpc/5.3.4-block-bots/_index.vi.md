@@ -1,82 +1,366 @@
 ---
-title : "Kiểm tra Gateway Endpoint"
-date : 2024-01-01 
-weight : 2
+title : "Chặn Bad Bots"
+date : 2024-01-01
+weight : 4
 chapter : false
-pre : " <b> 5.3.2 </b> "
+pre : " <b> 4.3.4. </b> "
 ---
 
-#### Tạo S3 bucket
+#### Tổng quan
 
-1. Đi đến S3 management console
-2. Trong Bucket console, chọn **Create bucket**
+Sau khi giám sát bot traffic với Bot Control ở chế độ Count, phân tích CloudWatch metrics và sampled requests cho thấy bot "zyborg" đang gây ra traffic bất thường và quá tải web server. Phần này triển khai custom rule để chặn bot độc hại này trong khi bảo toàn bot traffic hợp lệ.
 
-![Create bucket](/images/5-Workshop/5.3-S3-vpc/create-bucket.png)
+---
 
-3. Trong Create bucket console
-+ Đặt tên bucket: chọn 1 tên mà không bị trùng trong phạm vi toàn cầu (gợi ý: lab\<số-lab\>\<tên-bạn\>)
+### Kịch bản Bảo mật
 
-![Bucket name](/images/5-Workshop/5.3-S3-vpc/bucket-name.png)
+#### Tình huống Thực tế
 
+Sau khi phân tích dữ liệu từ CloudWatch metrics và sampled requests, bot "zyborg" đã được xác định là:
+- Gây ra các mẫu traffic bất thường
+- Quá tải tài nguyên web server
+- Không phải bot hợp lệ (không giống search engine crawlers)
+- Cần được chặn hoàn toàn để bảo vệ tài nguyên server
 
-+ Giữ nguyên giá trị của các fields khác (default)
-+ Kéo chuột xuống và chọn **Create bucket**
+#### Yêu cầu Kỹ thuật
 
-![Create](/images/5-Workshop/5.3-S3-vpc/create-button.png)    
+Tạo custom WAF rule để chặn tất cả requests từ bot "zyborg" dựa trên labels được gán bởi Bot Control managed rule. Label cần khớp:
 
-+ Tạo thành công S3 bucket
+```
+awswaf:managed:aws:bot-control:bot:name:zyborg
+```
 
-![Success](/images/5-Workshop/5.3-S3-vpc/bucket-success.png)
+Khi rule được kích hoạt, requests phải bị chặn với HTTP status code 403 Forbidden.
 
-#### Kết nối với EC2 bằng session manager
+#### Giải pháp Chặn Dựa trên Label
 
-+ Trong workshop này, bạn sẽ dùng AWS Session Manager để kết nối đến các EC2 instances. Session Manager là 1 tính năng trong dịch vụ Systems Manager được quản lý hoàn toàn bởi AWS. System manager cho phép bạn quản lý Amazon EC2 instances và các máy ảo on-premises (VMs)thông qua 1 browser-based shell. Session Manager cung cấp khả năng quản lý phiên bản an toàn và có thể kiểm tra mà không cần mở cổng vào, duy trì máy chủ bastion host hoặc quản lý khóa SSH.
+AWS WAF Bot Control rule group tự động phát hiện và gán labels cho bot requests. Thay vì chặn tất cả bots, chúng ta tạo custom rule cho chặn có chọn lọc dựa trên labels cụ thể. Phương pháp này cho phép:
 
-+ First cloud journey [Lab](https://000058.awsstudygroup.com/1-introduce/) để hiểu sâu hơn về Session manager.
+- **Duy trì tính linh hoạt**: Dễ dàng thêm/xóa bots cần chặn
+- **Bảo toàn bots hợp lệ**: Search engines và monitoring bots tiếp tục hoạt động bình thường
+- **Kiểm soát chi tiết**: Kiểm soát chi tiết actions cho từng loại bot
 
-1. Trong AWS Management Console, gõ Systems Manager trong ô tìm kiếm và nhấn Enter:
+---
 
-![system manager](/images/5-Workshop/5.3-S3-vpc/sm.png)
+### Tạo Custom Rule để Chặn Zyborg Bot
 
-2. Từ **Systems Manager** menu, tìm **Node Management** ở thanh bên trái và chọn **Session Manager**:
+#### Bước 1: Truy cập Web ACL và Tạo Rule Mới
 
-![system manager](/images/5-Workshop/5.3-S3-vpc/sm1.png)
+Mở AWS WAF Console và điều hướng đến Web ACL. Trong tab Rules, click "Add rules":
 
-3. Click Start Session, và chọn EC2 instance tên **Test-Gateway-Endpoint**. 
-{{% notice info %}}
-Phiên bản EC2 này đã chạy trong "VPC cloud" và sẽ được dùng để kiểm tra khả năng kết nối với Amazon S3 thông qua điểm cuối Cổng mà bạn vừa tạo (s3-gwe). {{% /notice %}}
+![Truy cập Web ACL](/images/5-Workshop/5.3-S3-vpc/diagram63.png)
 
-![Start session](/images/5-Workshop/5.3-S3-vpc/start-session.png)
+Trong màn hình chọn loại rule, chọn "Custom rule":
 
-Session Manager sẽ mở browser tab mới với shell prompt: sh-4.2 $
+![Chọn custom rule](/images/5-Workshop/5.3-S3-vpc/diagram64.png)
 
-![Success](/images/5-Workshop/5.3-S3-vpc/start-session-success.png)
+AWS WAF cung cấp nhiều loại rule template:
+- **IP-based rule**: Chặn/cho phép các địa chỉ IP và dải IP cụ thể
+- **Geo-based rule**: Chặn/cho phép traffic theo quốc gia
+- **Rate-based rule**: Chặn IPs vượt quá giới hạn request
+- **Custom rule**: Tạo rules nâng cao với nhiều điều kiện
 
-Bạn đã bắt đầu phiên kết nối đến EC2 trong VPC Cloud thành công. Trong bước tiếp theo, chúng ta sẽ tạo một  S3 bucket và một tệp trong đó.
-#### Create a file and upload to s3 bucket
+Tiếp tục chọn "Custom rule" trong rule builder:
 
-1. Đổi về ssm-user's thư mục bằng lệnh "cd ~" 
+![Chọn custom rule builder](/images/5-Workshop/5.3-S3-vpc/diagram65.png)
 
-![Change user's dir](/images/5-Workshop/5.3-S3-vpc/cli1.png)
+#### Bước 2: Cấu hình Chi tiết Rule
 
-2. Tạo 1 file để kiểm tra bằng lệnh "fallocate -l 1G testfile.xyz", 1 file tên "testfile.xyz" có kích thước 1GB sẽ được tạo.
+Thiết lập thông tin cơ bản cho custom rule:
 
-![Create file](/images/5-Workshop/5.3-S3-vpc/cli-file.png)
+![Cấu hình chi tiết rule](/images/5-Workshop/5.3-S3-vpc/diagram66.png)
 
-3. Tải file mình vừa tạo lên S3 với lệnh "aws s3 cp testfile.xyz s3://your-bucket-name". Thay your-bucket-name bằng tên S3 bạn đã tạo.
+**Cấu hình Rule:**
+- **Rule type**: Rule builder (visual editor, không phải JSON editor)
+- **Name**: zyborg-block
+- **Type**: Regular rule (không phải rate-based rule)
+- **Action**: Block
+- **If a request**: matches the statement
 
-![Uploaded](/images/5-Workshop/5.3-S3-vpc/uploaded.png)
+**Quy ước Đặt tên Rule:**
+- Sử dụng 1-128 ký tự từ A-Z, a-z, 0-9, dấu gạch ngang, và dấu gạch dưới
+- Tên nên mô tả rõ chức năng: zyborg-block cho biết rule này chặn zyborg bot
 
-Bạn đã tải thành công tệp lên bộ chứa S3 của mình. Bây giờ bạn có thể kết thúc session.
+#### Bước 3: Định nghĩa Statement Dựa trên Label
 
-#### Kiểm tra object trong S3 bucket
+Cấu hình statement để khớp requests có labels từ Bot Control:
 
-1. Đi đến S3 console.  
-2. Click tên s3 bucket của bạn
-3. Trong Bucket console, bạn sẽ thấy tệp bạn đã tải lên S3 bucket của mình
+![Cấu hình label matching](/images/5-Workshop/5.3-S3-vpc/diagram67.png)
 
-![Check S3](/images/5-Workshop/5.3-S3-vpc/check-s3-bucket.png)
+**Cấu hình Statement:**
+- **Inspect**: Has a label
+- **Match scope**: Label
+- **Match key**: `awswaf:managed:aws:bot-control:bot:name:zyborg`
 
-#### Tóm tắt
+**Giải thích Format Label:**
 
-Chúc mừng bạn đã hoàn thành truy cập S3 từ VPC. Trong phần này, bạn đã tạo gateway endpoint cho Amazon S3 và sử dụng AWS CLI để tải file lên. Quá trình tải lên hoạt động vì gateway endpoint cho phép giao tiếp với S3 mà không cần Internet gateway gắn vào "VPC Cloud". Điều này thể hiện chức năng của gateway endpoint như một đường dẫn an toàn đến S3 mà không cần đi qua pub    lic Internet.
+Label được cấu trúc theo namespace hierarchy:
+
+![Label namespace hierarchy](/images/5-Workshop/5.3-S3-vpc/diagram68.png)
+
+**Các Thành phần:**
+- `awswaf:managed:aws:bot-control`: Namespace của Bot Control managed rule
+- `bot:name:zyborg`: Bot identifier cụ thể được gán bởi Bot Control
+
+Bot Control có thể gán nhiều loại label:
+- `bot:name:googlebot`: Search engine bot
+- `bot:name:bingbot`: Bing crawler
+- `bot:name:zyborg`: Malicious scraper bot
+- `bot:category:search_engine`: Label dựa trên category
+- `bot:category:monitoring`: Monitoring bots
+
+#### Bước 4: Hoàn thành Cấu hình
+
+Xem lại tất cả cấu hình trước khi thêm rule:
+
+![Hoàn thành cấu hình](/images/5-Workshop/5.3-S3-vpc/diagram69.png)
+
+**Xác nhận Thông tin:**
+- Action: Block
+- Rule name: zyborg-block
+- If a request: matches the statement
+- Inspect: Has a label
+- Match key: `awswaf:managed:aws:bot-control:bot:name:zyborg`
+
+**Cấu hình Tùy chọn** (không sử dụng trong phần này):
+- Custom response: Có thể tùy chỉnh HTTP response code và body
+- Add labels: Có thể thêm labels bổ sung cho matched requests
+- Rule configuration: Có thể override cài đặt CloudWatch metrics
+
+Click "Add rule" để hoàn thành tạo custom rule. AWS WAF sẽ validate cấu hình và thêm rule vào Web ACL.
+
+---
+
+### Cấu hình Rule Priority và Xác minh
+
+#### Thiết lập Thứ tự Priority Đúng
+
+Sau khi click Add rule, màn hình Manage rules hiển thị tất cả rules theo thứ tự priority:
+
+![Manage rules](/images/5-Workshop/5.3-S3-vpc/diagram70.png)
+
+**Tại sao Priority Quan trọng:**
+
+Rule priority trong AWS WAF quyết định thứ tự đánh giá rules. Điều này cực kỳ quan trọng cho label-based rules:
+
+**1. Bot Control rule phải chạy TRƯỚC:**
+- Bot Control đánh giá request
+- Phát hiện User-Agent "zyborg"
+- Gán label: `awswaf:managed:aws:bot-control:bot:name:zyborg`
+- Request tiếp tục với label đã gán
+
+**2. Custom rule zyborg-block chạy SAU:**
+- Kiểm tra request có label không
+- Nếu có zyborg label → Block
+- Nếu không có label → Tiếp tục
+
+**3. Nếu thứ tự bị đảo ngược:**
+- zyborg-block chạy trước → không tìm thấy label (chưa được gán)
+- Request được cho phép
+- Bot Control chạy sau → gán label nhưng đã quá muộn
+- Rule không hoạt động!
+
+**Thứ tự Rule Hiện tại:**
+
+| Priority | Rule Name | WCU | Type |
+|----------|-----------|-----|------|
+| 0 | AWS-AWSManagedRulesCommonRuleSet | 700 | Managed |
+| 1 | AWS-AWSManagedRulesSQLiRuleSet | 200 | Managed |
+| 2 | path-block | 12 | Custom |
+| 3 | AWS-AWSManagedRulesBotControlRuleSet | 75 | Managed ← Bot Control |
+| 4 | zyborg-block | 1 | Custom ← Phải ở dưới |
+
+**Phân tích WCU (Web ACL Capacity Units):**
+- Total capacity: 988 WCU
+- Maximum allowed: 1500 WCU (default quota)
+- Remaining capacity: 512 WCU
+- zyborg-block chỉ tốn 1 WCU (rất nhẹ) vì chỉ kiểm tra labels
+
+**Luồng Đánh giá Rules:**
+
+![Request arrives](/images/5-Workshop/5.3-S3-vpc/Requestarrives.png)
+
+**Tự động Lưu:** Giao diện mới của AWS WAF tự động lưu cấu hình sau khi thêm rules. Rule được kích hoạt ngay lập tức và bắt đầu đánh giá traffic.
+
+---
+
+### Xác minh Hiệu quả Bảo vệ
+
+#### Kiểm thử Thủ công với curl
+
+Để xác minh rule hoạt động đúng, kiểm thử bằng cách gửi request với fake zyborg bot User-Agent:
+
+![Kiểm thử với curl](/images/5-Workshop/5.3-S3-vpc/diagram71.png)
+
+**Lệnh Kiểm thử:**
+
+```
+curl -I -H "User-Agent: zyborg" https://d1aty6dsjre298.cloudfront.net/
+```
+
+**Kết quả:**
+
+```
+HTTP/2 403
+server: CloudFront
+date: Tue, 03 Mar 2026 16:01:46 GMT
+content-type: text/html
+content-length: 919
+x-cache: Error from cloudfront
+via: 1.1 301d57dc68935094b3f775f1991fc4e2.cloudfront.net (CloudFront)
+x-amz-cf-pop: HAN51-P2
+x-amz-cf-id: FYO3Dz24WeHcsJD40US6y_oUp6zIVkK0qeUCeARBbzqNpiBdUP3UA==
+```
+
+**Phân tích Kết quả:**
+
+**1. HTTP/2 403 Forbidden:**
+- Request bị chặn thành công
+- Status code 403 là block response mặc định của AWS WAF
+- Client nhận error ngay lập tức
+
+**2. server: CloudFront:**
+- Response đến từ CloudFront edge location
+- Request không bao giờ đến origin server (S3)
+- Tiết kiệm bandwidth và compute resources
+
+**3. x-cache: Error from cloudfront:**
+- Cho biết đây là error response từ CloudFront
+- Không phải cached response
+- WAF block xảy ra theo thời gian thực
+
+**4. x-amz-cf-pop: HAN51-P2:**
+- Request được xử lý tại Hanoi edge location
+- Latency thấp cho users trong khu vực
+- WAF rules được replicate đến tất cả edge locations
+
+**5. Thời gian response:**
+- Total time: < 50ms
+- Rất nhanh do chặn tại edge location
+- Không có overhead từ origin server processing
+
+#### So sánh với Legitimate Request
+
+Kiểm thử với User-Agent bình thường:
+
+```
+curl -I https://d1aty6dsjre298.cloudfront.net/
+```
+
+**Kết quả:**
+
+```
+HTTP/2 200
+server: AmazonS3
+content-type: text/html
+x-cache: Miss from cloudfront
+```
+
+**Nhận xét:**
+- Legitimate requests không có "zyborg" User-Agent vẫn truy cập bình thường
+- Response 200 OK với nội dung từ S3
+- Xác nhận rule chỉ chặn target bot, không ảnh hưởng traffic bình thường
+
+---
+
+### Phân tích Kỹ thuật và Kết quả
+
+#### Thuật toán Lọc Dựa trên Label
+
+AWS WAF sử dụng thuật toán lọc dựa trên label cho chặn bot hiệu quả và linh hoạt.
+
+**Cơ chế Hoạt động:**
+
+**1. Label propagation:**
+- Bot Control rule phát hiện bot patterns trong request
+- Gán labels vào request context
+- Labels lan truyền qua rule chain
+
+**2. Label matching:**
+- Custom rule kiểm tra sự tồn tại của labels cụ thể
+- Sử dụng hash table lookup cho hiệu suất
+- Khớp chính xác label strings
+
+**3. Conditional blocking:**
+- Chỉ chặn requests có matching labels
+- Bảo toàn requests không khớp
+- Cho phép kiểm soát chi tiết theo từng loại bot
+
+**4. Time complexity:**
+- Label lookup: O(1) trung bình trong hash table
+- Label insertion: O(1) trung bình
+- Total overhead: < 1ms mỗi request
+
+#### Hash Table Implementation
+
+AWS WAF sử dụng hash table để lưu trữ và lookup labels:
+
+```
+Request Context {
+   labels: HashSet<String> {
+       "awswaf:managed:aws:bot-control:bot:name:zyborg",
+       ...
+   }
+}
+```
+
+**Phân tích Complexity:**
+- Insert label: O(1) trung bình
+- Lookup label: O(1) trung bình
+- Space complexity: O(k) với k là số lượng labels
+
+#### Ưu điểm của Phương pháp Dựa trên Label
+
+**1. Tính linh hoạt:**
+- Dễ dàng thêm rules mới để chặn bots khác
+- Không cần sửa đổi Bot Control managed rule
+- Hỗ trợ cập nhật rules động
+
+**2. Khả năng bảo trì:**
+- Tách biệt concerns: Detection vs Action
+- Bot Control xử lý detection
+- Custom rules xử lý actions
+- Dễ debug
+
+**3. Kiểm soát chi tiết:**
+- Chặn bots cụ thể thay vì tất cả
+- Actions khác nhau cho các loại bot khác nhau
+- Rate limiting theo từng bot (nếu cần)
+
+**4. Hiệu suất:**
+- Label matching rất nhanh: O(1)
+- Overhead tối thiểu: < 1ms
+- Không cần regex matching
+- Scale tốt với nhiều rules
+
+**5. Hiệu quả chi phí:**
+- Label-based rules chỉ tốn 1 WCU
+- Rất rẻ so với complex regex rules
+
+---
+
+### Tóm tắt
+
+**Cải thiện Bảo mật:**
+- ✅ Bot "zyborg" bị chặn hoàn toàn với 403 Forbidden
+- ✅ Legitimate traffic không bị ảnh hưởng
+- ✅ Không có false positives
+- ✅ Bảo vệ được kích hoạt ngay lập tức
+
+**Metrics Hiệu suất:**
+
+| Metric | Giá trị |
+|--------|---------|
+| Response time | < 1ms overhead |
+| Label lookup | O(1) |
+| WCU cost | 1 |
+| False positive rate | 0% |
+| Block rate | 100% |
+
+**Tiết kiệm Tài nguyên:**
+- Giảm tải server: Bot traffic không đến origin
+- Tiết kiệm bandwidth: Blocked requests không tiêu tốn bandwidth
+- Giảm chi phí: Giảm compute và data transfer costs
+
+**Bước Tiếp theo:**
+- Mở rộng với rate limiting để kiểm soát lượng traffic từ legitimate bots trong phần 4.3.5

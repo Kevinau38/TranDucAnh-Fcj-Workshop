@@ -1,82 +1,243 @@
 ---
-title : "Kiểm tra Gateway Endpoint"
-date : 2024-01-01 
-weight : 2
+title : "Giám sát Lưu lượng Bot"
+date : 2024-01-01
+weight : 3
 chapter : false
-pre : " <b> 5.3.2 </b> "
+pre : " <b> 4.3.3. </b> "
 ---
 
-#### Tạo S3 bucket
+#### Tổng quan
 
-1. Đi đến S3 management console
-2. Trong Bucket console, chọn **Create bucket**
+Sau khi triển khai AWS Managed Rules và bảo vệ đường dẫn tùy chỉnh, kết quả kiểm thử cho thấy bot traffic vẫn là lỗ hổng (1/10 attacks thành công). Phần này triển khai AWS WAF Bot Control để giám sát và phân tích các mẫu bot traffic trước khi triển khai hành động chặn.
 
-![Create bucket](/images/5-Workshop/5.3-S3-vpc/create-bucket.png)
+---
 
-3. Trong Create bucket console
-+ Đặt tên bucket: chọn 1 tên mà không bị trùng trong phạm vi toàn cầu (gợi ý: lab\<số-lab\>\<tên-bạn\>)
+### Kịch bản Bảo mật
 
-![Bucket name](/images/5-Workshop/5.3-S3-vpc/bucket-name.png)
+#### Tình huống Thực tế
+
+Đội bảo mật đã xác định rằng một lượng lớn traffic website đến từ các loại bot khác nhau, bao gồm:
+
+- **Wanted bots**: Search engine crawlers, monitoring bots
+- **Unwanted bots**: Scrapers, malicious bots
+
+#### Yêu cầu Giám sát
+
+- Thu thập thông tin chi tiết về số lượng và loại bot
+- Phân biệt giữa wanted và unwanted bots
+- Giám sát hành vi bot trước khi quyết định hành động chặn
+- Giảm chi phí bằng cách loại trừ static content khỏi bot inspection
+
+#### Yêu cầu Tối ưu Chi phí
+
+Doanh nghiệp muốn giới hạn phạm vi bot control để tránh bảo vệ không cần thiết cho static content như CSS, JS, và images. Developers cung cấp RegEx pattern sau để xác định static content:
+
+```
+(?i)\.(jpe?g|gif|png|svg|ico|css|js|woff2?)$
+```
+
+#### Giải pháp AWS WAF Bot Control
+
+Sử dụng AWS WAF Bot Control managed rule group để giám sát bot traffic. Rule group này cung cấp hai mức inspection:
+
+- **Common**: Phát hiện common bots (search engines, social media crawlers)
+- **Targeted**: Phát hiện sophisticated bots (advanced scrapers, credential stuffing)
+
+**Chiến lược**: Bắt đầu với mức Common ở chế độ Count để giám sát và phân tích các mẫu bot trước khi triển khai chặn.
+
+---
+
+### Tạo Regex Pattern Set cho Static Content
+
+#### Bước 1: Truy cập Regex Pattern Sets
+
+Điều hướng đến Regex pattern sets trong AWS WAF và xác minh region đúng đã được chọn:
+
+![Truy cập regex pattern sets](/images/5-Workshop/5.3-S3-vpc/diagram54.png)
+
+#### Bước 2: Tạo Regex Pattern Set Mới
+
+Tạo pattern set để xác định static content:
+
+![Tạo regex pattern set](/images/5-Workshop/5.3-S3-vpc/diagram55.png)
+
+**Cấu hình Pattern:**
+- **Name**: static-content
+- **Region**: Global (CloudFront)
+- **Description**: Pattern to match static file extensions
+- **Regular expression**: `(?i)\.(jpe?g|gif|png|svg|ico|css|js|woff2?)$`
+
+**Giải thích Pattern:**
+- `(?i)`: Matching không phân biệt hoa thường
+- `\.`: Khớp ký tự dấu chấm
+- `(jpe?g|gif|png|svg|ico|css|js|woff2?)`: Khớp các phần mở rộng file
+  - `jpe?g`: Khớp cả jpg và jpeg
+  - `woff2?`: Khớp cả woff và woff2
+- `$`: Neo cuối chuỗi (đảm bảo phần mở rộng ở cuối)
+
+---
+
+### Cấu hình AWS WAF Bot Control Rule Set
+
+#### Truy cập Web ACL
+
+Truy cập AWS WAF Console và mở waf-workshop-webacl:
+
+![Mở Web ACL](/images/5-Workshop/5.3-S3-vpc/diagram56.png)
+
+#### Thêm Bot Control Rule Group
+
+Trong managed rule groups, tìm và thêm AWS WAF Bot Control:
+
+![Thêm Bot Control](/images/5-Workshop/5.3-S3-vpc/diagram57.png)
+
+AWS WAF Bot Control là managed rule group được duy trì bởi AWS để phát hiện và quản lý bot traffic. Rule group này sử dụng machine learning và behavioral analysis để xác định bots.
+
+---
+
+### Cấu hình Bot Control
+
+#### Mức Inspection Bot Control
+
+Chọn mức inspection: Common
+
+![Chọn mức inspection](/images/5-Workshop/5.3-S3-vpc/diagram58.png)
+
+**So sánh Mức Inspection:**
+
+**Common:**
+- Phát hiện common bots (search engines, social media)
+- Chi phí thấp hơn
+- Phù hợp cho hầu hết use cases
+
+**Targeted:**
+- Phát hiện sophisticated bots
+- Chi phí cao hơn
+- Cho ứng dụng có giá trị cao
+
+#### Override Rule Actions
+
+Thiết lập Bot Control rules: Override tất cả rule actions thành Count
+
+![Override thành Count](/images/5-Workshop/5.3-S3-vpc/diagram59.png)
+
+**Lý do Count Mode:**
+- Giám sát bot traffic mà không chặn
+- Phân tích các mẫu và hành vi bot
+- Xác định wanted vs unwanted bots
+- Đưa ra quyết định có thông tin trước khi bật chặn
+- Không có rủi ro chặn bots hợp lệ
+
+---
+
+### Cấu hình Scope-Down Statement
+
+#### Thiết lập Scope-Down để Loại trừ Static Content
+
+Cấu hình scope-down statement để giới hạn bot control chỉ cho các requests nội dung không phải static:
+
+![Cấu hình scope-down](/images/5-Workshop/5.3-S3-vpc/diagram60.png)
+
+**Cấu hình Scope-Down:**
+- **Choose scope of inspection**: Only inspect requests that match a scope-down statement
+- **Scope-down statement**: Enabled (checked)
+- **If a request**: doesn't match the statement (NOT)
+- **Inspect**: URI path
+- **Match type**: Matches pattern from regex pattern set
+- **Regex pattern set**: static-content
+- **Text transformation**: None
+
+**Giải thích Logic:**
+- NOT (URI path matches static-content pattern)
+- = Chỉ inspect requests KHÔNG phải static files
+- = Bot Control chỉ áp dụng cho dynamic content
+- = Tối ưu chi phí bằng cách loại trừ CSS, JS, images
+
+---
+
+### Hoàn thành Cấu hình và Xác minh
+
+#### Thiết lập Priority và Lưu Rules
+
+Trên trang "Set rule priority", thiết lập priority cho Bot Control rule:
+
+![Thiết lập priority](/images/5-Workshop/5.3-S3-vpc/diagram61.png)
+
+**Cấu hình Priority:**
+- Bot Control rule: Priority sau managed rules và custom rules
+- Đảm bảo các bảo vệ khác đánh giá trước
+- Click "Save" để hoàn thành
+
+#### Xác minh Bot Control Rule
+
+Sau khi lưu, xác minh Bot Control rule đã được thêm thành công:
+
+![Xác nhận Bot Control](/images/5-Workshop/5.3-S3-vpc/diagram62.png)
+
+**Trạng thái Web ACL:**
+- Total rules: 4 (Core Rule Set + SQL Database + path-block + Bot Control)
+- Bot Control: Active, Count mode
+- Scope-down: Static content đã loại trừ
+- Inspection level: Common
+
+---
+
+### Phân tích Kỹ thuật và Kết quả
+
+#### Thuật toán Phát hiện Bot
+
+**Machine Learning Classification:**
+- **Feature extraction**: User-Agent, request patterns, timing, headers
+- **Classification model**: Được train trên hàng triệu bot signatures
+- **Confidence scoring**: Mỗi request nhận điểm xác suất bot
+- **Label assignment**: Requests được gắn nhãn với các danh mục bot
+
+**Behavioral Analysis:**
+- **Request frequency**: Tốc độ request bất thường
+- **Navigation patterns**: Hành vi duyệt web không phải con người
+- **JavaScript execution**: Bot không có khả năng thực thi JS
+- **Cookie handling**: Các mẫu quản lý cookie của bot
+
+#### Regex Pattern Matching
+
+- **Algorithm**: Finite State Automaton (FSA)
+- **Time complexity**: O(n) với n là độ dài URI path
+- **Space complexity**: O(m) với m là kích thước pattern
+- **Performance**: Compiled regex cho matching nhanh
+
+#### Scope-Down Logic
 
 
-+ Giữ nguyên giá trị của các fields khác (default)
-+ Kéo chuột xuống và chọn **Create bucket**
+IF (URI path NOT matches static-content pattern) THEN
+   Apply Bot Control inspection
+ELSE
+   Skip Bot Control (cost optimization)
+END IF
 
-![Create](/images/5-Workshop/5.3-S3-vpc/create-button.png)    
+#### Tối ưu Chi phí Đạt được
 
-+ Tạo thành công S3 bucket
+- **Static files**: ~60% tổng requests
+- **Chi phí Bot Control**: Giảm 60%
+- **Performance**: Không có inspection overhead cho static content
+- **Functionality**: Dynamic content được bảo vệ đầy đủ
 
-![Success](/images/5-Workshop/5.3-S3-vpc/bucket-success.png)
+#### Khả năng Giám sát
 
-#### Kết nối với EC2 bằng session manager
+- **Bot labels**: Requests được gắn thẻ với các danh mục bot
+- **CloudWatch metrics**: Lượng và loại bot traffic
+- **Sampled requests**: Phân tích chi tiết bot request
+- **Dashboard**: Các mẫu bot traffic trực quan
 
-+ Trong workshop này, bạn sẽ dùng AWS Session Manager để kết nối đến các EC2 instances. Session Manager là 1 tính năng trong dịch vụ Systems Manager được quản lý hoàn toàn bởi AWS. System manager cho phép bạn quản lý Amazon EC2 instances và các máy ảo on-premises (VMs)thông qua 1 browser-based shell. Session Manager cung cấp khả năng quản lý phiên bản an toàn và có thể kiểm tra mà không cần mở cổng vào, duy trì máy chủ bastion host hoặc quản lý khóa SSH.
+---
 
-+ First cloud journey [Lab](https://000058.awsstudygroup.com/1-introduce/) để hiểu sâu hơn về Session manager.
+### Tóm tắt
 
-1. Trong AWS Management Console, gõ Systems Manager trong ô tìm kiếm và nhấn Enter:
+**Thành tựu:**
+- ✅ Bot Control rule hoạt động ở chế độ Count
+- ✅ Giám sát bot traffic mà không chặn
+- ✅ Static content đã loại trừ để tối ưu chi phí
+- ✅ Nền tảng cho targeted bot blocking
+- ✅ Thu thập dữ liệu cho quyết định rate limiting
 
-![system manager](/images/5-Workshop/5.3-S3-vpc/sm.png)
-
-2. Từ **Systems Manager** menu, tìm **Node Management** ở thanh bên trái và chọn **Session Manager**:
-
-![system manager](/images/5-Workshop/5.3-S3-vpc/sm1.png)
-
-3. Click Start Session, và chọn EC2 instance tên **Test-Gateway-Endpoint**. 
-{{% notice info %}}
-Phiên bản EC2 này đã chạy trong "VPC cloud" và sẽ được dùng để kiểm tra khả năng kết nối với Amazon S3 thông qua điểm cuối Cổng mà bạn vừa tạo (s3-gwe). {{% /notice %}}
-
-![Start session](/images/5-Workshop/5.3-S3-vpc/start-session.png)
-
-Session Manager sẽ mở browser tab mới với shell prompt: sh-4.2 $
-
-![Success](/images/5-Workshop/5.3-S3-vpc/start-session-success.png)
-
-Bạn đã bắt đầu phiên kết nối đến EC2 trong VPC Cloud thành công. Trong bước tiếp theo, chúng ta sẽ tạo một  S3 bucket và một tệp trong đó.
-#### Create a file and upload to s3 bucket
-
-1. Đổi về ssm-user's thư mục bằng lệnh "cd ~" 
-
-![Change user's dir](/images/5-Workshop/5.3-S3-vpc/cli1.png)
-
-2. Tạo 1 file để kiểm tra bằng lệnh "fallocate -l 1G testfile.xyz", 1 file tên "testfile.xyz" có kích thước 1GB sẽ được tạo.
-
-![Create file](/images/5-Workshop/5.3-S3-vpc/cli-file.png)
-
-3. Tải file mình vừa tạo lên S3 với lệnh "aws s3 cp testfile.xyz s3://your-bucket-name". Thay your-bucket-name bằng tên S3 bạn đã tạo.
-
-![Uploaded](/images/5-Workshop/5.3-S3-vpc/uploaded.png)
-
-Bạn đã tải thành công tệp lên bộ chứa S3 của mình. Bây giờ bạn có thể kết thúc session.
-
-#### Kiểm tra object trong S3 bucket
-
-1. Đi đến S3 console.  
-2. Click tên s3 bucket của bạn
-3. Trong Bucket console, bạn sẽ thấy tệp bạn đã tải lên S3 bucket của mình
-
-![Check S3](/images/5-Workshop/5.3-S3-vpc/check-s3-bucket.png)
-
-#### Tóm tắt
-
-Chúc mừng bạn đã hoàn thành truy cập S3 từ VPC. Trong phần này, bạn đã tạo gateway endpoint cho Amazon S3 và sử dụng AWS CLI để tải file lên. Quá trình tải lên hoạt động vì gateway endpoint cho phép giao tiếp với S3 mà không cần Internet gateway gắn vào "VPC Cloud". Điều này thể hiện chức năng của gateway endpoint như một đường dẫn an toàn đến S3 mà không cần đi qua pub    lic Internet.
+**Bước Tiếp theo:**
+- Sử dụng bot labels từ giám sát này để triển khai chặn có mục tiêu cho các unwanted bots cụ thể trong phần 4.3.4

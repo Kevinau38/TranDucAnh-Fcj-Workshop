@@ -6,120 +6,108 @@ chapter: false
 pre: " <b> 3.1. </b> "
 ---
 
-{{% notice warning %}}
-⚠️ **Lưu ý:** Các thông tin dưới đây chỉ nhằm mục đích tham khảo, vui lòng **không sao chép nguyên văn** cho bài báo cáo của bạn kể cả warning này.
-{{% /notice %}}
+# Bài thu hoạch: "AWS re:Invent Recap HCMC"
 
-# Bài thu hoạch “GenAI-powered App-DB Modernization workshop”
+### Mục đích của sự kiện
 
-### Mục Đích Của Sự Kiện
+- Chia sẻ các đổi mới và sản phẩm mới nhất của AWS từ re:Invent 2025
+- Cung cấp các phiên chuyên sâu về dịch vụ AI/ML và hiện đại hóa hạ tầng
+- Trình diễn các workshop thực hành và phiên kỹ thuật
+- Thúc đẩy kết nối với những người đam mê cloud và chuyên gia AWS
 
-- Chia sẻ best practices trong thiết kế ứng dụng hiện đại
-- Giới thiệu phương pháp DDD và event-driven architecture
-- Hướng dẫn lựa chọn compute services phù hợp
-- Giới thiệu công cụ AI hỗ trợ development lifecycle
+### Diễn giả
 
-### Danh Sách Diễn Giả
+- **AWS Solutions Architects** – Track Infrastructure & Application Modernization
+- **AWS AI/ML Specialists** – Track Analytics/ML/AI & Innovation
+- **AWS Leadership Team** – Keynotes chiến lược và công bố sản phẩm
 
-- **Jignesh Shah** - Director, Open Source Databases
-- **Erica Liu** - Sr. GTM Specialist, AppMod
-- **Fabrianne Effendi** - Assc. Specialist SA, Serverless Amazon Web Services
+### Nội dung nổi bật
 
-### Nội Dung Nổi Bật
+#### Track Infrastructure & Application Modernization
 
-#### Đưa ra các ảnh hưởng tiêu cực của kiến trúc ứng dụng cũ
+- **Chiến lược Hybrid Cloud & Multi-Cloud** → Tùy chọn triển khai linh hoạt trên các môi trường
+- **Ứng dụng dựa trên Container** → Đơn giản hóa triển khai và quản lý trên AWS
+- **Purpose-Built Databases** → Tối ưu hiệu suất workload với các dịch vụ database chuyên biệt
+- **Hiện đại hóa bằng AI** → AWS Transform & Kiro cho cập nhật ứng dụng tự động
+- **Bảo mật thông minh** → Phát hiện mối đe dọa nâng cao và bảo vệ hệ thống
+- **Vietnam DirectConnect POP** → Công bố mở rộng hạ tầng mới
 
-- Thời gian release sản phẩm lâu → Mất doanh thu/bỏ lỡ cơ hội
-- Hoạt động kém hiệu quả → Mất năng suất, tốn kém chi phí
-- Không tuân thủ các quy định về bảo mật → Mất an ninh, uy tín
+#### Track Analytics/ML/AI & Innovation
 
-#### Chuyển đổi sang kiến trúc ứng dụng mới - Microservice Architecture
+- **Vector Database trên S3** → Giải pháp lưu trữ và truy xuất dữ liệu AI có thể mở rộng
+- **Natural Query Language trong OpenSearch** → Đơn giản hóa khả năng tìm kiếm và phân tích
+- **GenAI nâng cao với Nova & Bedrock** → Các foundation models và dịch vụ AI mới nhất
+- **Tài nguyên AWS thông qua MCP** → Model Context Protocol cho tương tác AI cải thiện
+- **Multimodal Retrieval** → Khả năng knowledge base nâng cao cho Bedrock
+- **MLOps với SageMaker** → Chiến lược training và deployment model có thể mở rộng
 
-Chuyển đổi thành hệ thống modular – từng chức năng là một **dịch vụ độc lập** giao tiếp với nhau qua **sự kiện** với 3 trụ cột cốt lõi:
+### Những gì học được
 
-- **Queue Management**: Xử lý tác vụ bất đồng bộ
-- **Caching Strategy:** Tối ưu performance
-- **Message Handling:** Giao tiếp linh hoạt giữa services
+#### AI/ML Innovation
 
-#### Domain-Driven Design (DDD)
+- **Foundation Models**: Nova đại diện cho thế hệ tiếp theo của khả năng AI AWS
+- **Bedrock Enhancements**: Hiệu suất cải thiện và tính năng mới cho ứng dụng GenAI
+- **Vector Databases**: Giải pháp dựa trên S3 cho tối ưu hóa AI workload
+- **MLOps at Scale**: SageMaker cung cấp quản lý vòng đời model toàn diện
 
-- **Phương pháp 4 bước**: Xác định domain events → sắp xếp timeline → identify actors → xác định bounded contexts
-- **Case study bookstore**: Minh họa cách áp dụng DDD thực tế
-- **Context mapping**: 7 patterns tích hợp bounded contexts
+#### Infrastructure Modernization
 
-#### Event-Driven Architecture
+- **Container Strategy**: Phương pháp triển khai và quản lý ứng dụng đơn giản hóa
+- **Database Optimization**: Purpose-built databases cho yêu cầu workload cụ thể
+- **Security Intelligence**: Khả năng phát hiện và phản ứng mối đe dọa tự động
+- **Regional Expansion**: Vietnam DirectConnect POP tăng cường kết nối địa phương
 
-- **3 patterns tích hợp**: Publish/Subscribe, Point-to-point, Streaming
-- **Lợi ích**: Loose coupling, scalability, resilience
-- **So sánh sync vs async**: Hiểu rõ trade-offs (sự đánh đổi)
+#### Strategic Implementation
 
-#### Compute Evolution
+- **Hybrid Approach**: Chiến lược multi-cloud cho sự linh hoạt doanh nghiệp
+- **AI Integration**: Phương pháp thực tế để tích hợp GenAI vào hệ thống hiện có
+- **Performance Optimization**: Tinh chỉnh database và ứng dụng cho môi trường cloud
+- **Automation Tools**: Hiện đại hóa bằng AI cho cập nhật hệ thống legacy
 
-- **Shared Responsibility Model**: Từ EC2 → ECS → Fargate → Lambda
-- **Serverless benefits**: No server management, auto-scaling, pay-for-value
-- **Functions vs Containers**: Criteria lựa chọn phù hợp
+### Ứng dụng vào công việc
 
-#### Amazon Q Developer
-
-- **SDLC automation**: Từ planning đến maintenance
-- **Code transformation**: Java upgrade, .NET modernization
-- **AWS Transform agents**: VMware, Mainframe, .NET migration
-
-### Những Gì Học Được
-
-#### Tư Duy Thiết Kế
-
-- **Business-first approach**: Luôn bắt đầu từ business domain, không phải technology
-- **Ubiquitous language**: Importance của common vocabulary giữa business và tech teams
-- **Bounded contexts**: Cách identify và manage complexity trong large systems
-
-#### Kiến Trúc Kỹ Thuật
-
-- **Event storming technique**: Phương pháp thực tế để mô hình hóa quy trình kinh doanh
-- Sử dụng **Event-driven communication** thay vì synchronous calls
-- **Integration patterns**: Hiểu khi nào dùng sync, async, pub/sub, streaming
-- **Compute spectrum**: Criteria chọn từ VM → containers → serverless
-
-#### Chiến Lược Hiện Đại Hóa
-
-- **Phased approach**: Không rush, phải có roadmap rõ ràng
-- **7Rs framework**: Nhiều con đường khác nhau tùy thuộc vào đặc điểm của mỗi ứng dụng
-- **ROI measurement**: Cost reduction + business agility
-
-### Ứng Dụng Vào Công Việc
-
-- **Áp dụng DDD** cho project hiện tại: Event storming sessions với business team
-- **Refactor microservices**: Sử dụng bounded contexts để identify service boundaries
-- **Implement event-driven patterns**: Thay thế một số sync calls bằng async messaging
-- **Serverless adoption**: Pilot AWS Lambda cho một số use cases phù hợp
-- **Try Amazon Q Developer**: Integrate vào development workflow để boost productivity
+- **Triển khai Vector Databases**: Khám phá giải pháp dựa trên S3 cho lưu trữ dữ liệu AI trong các dự án hiện tại
+- **Áp dụng Nova Models**: Thử nghiệm các foundation models mới cho khả năng GenAI nâng cao
+- **Hiện đại hóa ứng dụng**: Áp dụng chiến lược container và purpose-built databases
+- **Tăng cường bảo mật**: Triển khai hệ thống phát hiện thông minh cho bảo vệ tốt hơn
+- **Tận dụng MLOps**: Sử dụng SageMaker cho training và deployment model có thể mở rộng
 
 ### Trải nghiệm trong event
 
-Tham gia workshop **“GenAI-powered App-DB Modernization”** là một trải nghiệm rất bổ ích, giúp tôi có cái nhìn toàn diện về cách hiện đại hóa ứng dụng và cơ sở dữ liệu bằng các phương pháp và công cụ hiện đại. Một số trải nghiệm nổi bật:
+Tham gia **"AWS re:Invent Recap HCMC"** là một trải nghiệm cực kỳ giá trị, cung cấp cái nhìn toàn diện về các đổi mới mới nhất của AWS và chiến lược triển khai thực tế. Các trải nghiệm nổi bật bao gồm:
 
-#### Học hỏi từ các diễn giả có chuyên môn cao
-- Các diễn giả đến từ AWS và các tổ chức công nghệ lớn đã chia sẻ **best practices** trong thiết kế ứng dụng hiện đại.
-- Qua các case study thực tế, tôi hiểu rõ hơn cách áp dụng **Domain-Driven Design (DDD)** và **Event-Driven Architecture** vào các project lớn.
+#### Học hỏi từ các chuyên gia AWS
+- Solutions Architects và specialists chia sẻ **best practices** từ các công bố re:Invent 2025
+- Thông qua các trình diễn thực tế, tôi hiểu sâu hơn về chiến lược **tích hợp AI/ML** và **hiện đại hóa hạ tầng**
 
 #### Trải nghiệm kỹ thuật thực tế
-- Tham gia các phiên trình bày về **event storming** giúp tôi hình dung cách **mô hình hóa quy trình kinh doanh** thành các domain events.
-- Học cách **phân tách microservices** và xác định **bounded contexts** để quản lý sự phức tạp của hệ thống lớn.
-- Hiểu rõ trade-offs giữa **synchronous và asynchronous communication** cũng như các pattern tích hợp như **pub/sub, point-to-point, streaming**.
+- Tham gia các **phiên kỹ thuật** giúp tôi hiểu cách triển khai **vector databases** và **ứng dụng GenAI**
+- Học về **chiến lược triển khai container** và tiêu chí lựa chọn **purpose-built database**
+- Hiểu lợi ích của **thực hành MLOps** và **training model tự động** với SageMaker
 
-#### Ứng dụng công cụ hiện đại
-- Trực tiếp tìm hiểu về **Amazon Q Developer**, công cụ AI hỗ trợ SDLC từ lập kế hoạch đến maintenance.
-- Học cách **tự động hóa code transformation** và pilot serverless với **AWS Lambda**, từ đó nâng cao năng suất phát triển.
+#### Khám phá công nghệ tiên tiến
+- Khám phá **Nova foundation models** và khả năng **Bedrock** nâng cao cho ứng dụng AI tiên tiến
+- Học về **Model Context Protocol (MCP)** cho tương tác tài nguyên AI cải thiện
+- Khám phá kỹ thuật **multimodal retrieval** cho triển khai knowledge base
 
-#### Kết nối và trao đổi
-- Workshop tạo cơ hội trao đổi trực tiếp với các chuyên gia, đồng nghiệp và team business, giúp **nâng cao ngôn ngữ chung (ubiquitous language)** giữa business và tech.
-- Qua các ví dụ thực tế, tôi nhận ra tầm quan trọng của **business-first approach**, luôn bắt đầu từ nhu cầu kinh doanh thay vì chỉ tập trung vào công nghệ.
+#### Kết nối và chia sẻ kiến thức
+- Sự kiện tạo cơ hội kết nối với **chuyên gia AWS**, **chuyên gia cloud địa phương**, và **đồng nghiệp developers**
+- Các case study thực tế chứng minh tầm quan trọng của **triển khai AI chiến lược** và **lập kế hoạch hạ tầng**
 
-#### Bài học rút ra
-- Việc áp dụng DDD và event-driven patterns giúp giảm **coupling**, tăng **scalability** và **resilience** cho hệ thống.
-- Chiến lược hiện đại hóa cần **phased approach** và đo lường **ROI**, không nên vội vàng chuyển đổi toàn bộ hệ thống.
-- Các công cụ AI như Amazon Q Developer có thể **boost productivity** nếu được tích hợp vào workflow phát triển hiện tại.
+#### Insights chiến lược
+- Hiểu **chiến lược hybrid cloud** và phương pháp **triển khai multi-cloud** cho môi trường doanh nghiệp
+- Học về **mở rộng hạ tầng cloud Việt Nam** với công bố DirectConnect POP mới
+- Tích lũy insights về công cụ **hiện đại hóa bằng AI** và khả năng **chuyển đổi tự động**
+
+#### Phát triển kỹ năng kỹ thuật
+- Nâng cao kiến thức về **triển khai vector database** và **tối ưu hóa AI workload**
+- Cải thiện hiểu biết về **container orchestration** và **xử lý AI serverless**
+- Học về **hệ thống bảo mật thông minh** và cơ chế **phát hiện mối đe dọa tự động**
 
 #### Một số hình ảnh khi tham gia sự kiện
-* Thêm các hình ảnh của các bạn tại đây
-> Tổng thể, sự kiện không chỉ cung cấp kiến thức kỹ thuật mà còn giúp tôi thay đổi cách tư duy về thiết kế ứng dụng, hiện đại hóa hệ thống và phối hợp hiệu quả hơn giữa các team.
+
+![Hình ảnh sự kiện AWS re:Invent Recap HCMC 1](/images/3-Events/aws_reinvent_recap_hcmc_1.jpg)
+
+![Hình ảnh sự kiện AWS re:Invent Recap HCMC 2](/images/3-Events/aws_reinvent_recap_hcmc_2.jpg)
+
+> Tổng thể, sự kiện không chỉ cung cấp kiến thức kỹ thuật tiên tiến mà còn giúp tôi hiểu định hướng chiến lược của cloud computing, đổi mới AI, và các bước thực tế cần thiết để triển khai các công nghệ này trong các kịch bản thực tế.

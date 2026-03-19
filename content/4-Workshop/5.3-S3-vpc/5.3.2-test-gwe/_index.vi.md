@@ -1,82 +1,197 @@
 ---
-title : "Kiểm tra Gateway Endpoint"
-date : 2024-01-01 
+title : "Bảo vệ Đường dẫn Tùy chỉnh"
+date : 2024-01-01
 weight : 2
 chapter : false
-pre : " <b> 5.3.2 </b> "
+pre : " <b> 4.3.2. </b> "
 ---
 
-#### Tạo S3 bucket
+#### Tổng quan
 
-1. Đi đến S3 management console
-2. Trong Bucket console, chọn **Create bucket**
+Phần này triển khai custom AWS WAF rules để bảo vệ các đường dẫn ứng dụng cụ thể khỏi truy cập trái phép. Trước khi giải quyết lỗ hổng bot traffic, chúng ta cần bảo mật các thư mục nhạy cảm chứa file cấu hình và server-side scripts.
 
-![Create bucket](/images/5-Workshop/5.3-S3-vpc/create-bucket.png)
+---
 
-3. Trong Create bucket console
-+ Đặt tên bucket: chọn 1 tên mà không bị trùng trong phạm vi toàn cầu (gợi ý: lab\<số-lab\>\<tên-bạn\>)
+### Kịch bản Bảo mật
 
-![Bucket name](/images/5-Workshop/5.3-S3-vpc/bucket-name.png)
+#### Tình huống Thực tế
 
+Website có thư mục `/includes` chứa các file cấu hình và server-side scripts chỉ nên được truy cập bởi server processes. Tuy nhiên, các file này hiện có thể được truy cập trực tiếp từ Internet, tạo ra rủi ro lộ thông tin nhạy cảm như:
 
-+ Giữ nguyên giá trị của các fields khác (default)
-+ Kéo chuột xuống và chọn **Create bucket**
+- Database credentials
+- API keys
+- Internal configurations
+- Server-side scripts
 
-![Create](/images/5-Workshop/5.3-S3-vpc/create-button.png)    
+#### Yêu cầu Bảo mật
 
-+ Tạo thành công S3 bucket
+- Chặn tất cả requests trực tiếp từ Internet đến thư mục `/includes`
+- Áp dụng URL decoding để ngăn chặn các nỗ lực bypass
+- Duy trì chức năng ứng dụng hợp lệ
+- Không có false positives với traffic bình thường
 
-![Success](/images/5-Workshop/5.3-S3-vpc/bucket-success.png)
+#### Giải pháp Custom Rule
 
-#### Kết nối với EC2 bằng session manager
+Sử dụng custom AWS WAF rule để chặn requests có paths bắt đầu bằng `/includes`. Để đảm bảo các requests đã encode (ví dụ: `/inc%6Cudes`) không bị bỏ sót, áp dụng URL decoding transformations trước khi kiểm tra.
 
-+ Trong workshop này, bạn sẽ dùng AWS Session Manager để kết nối đến các EC2 instances. Session Manager là 1 tính năng trong dịch vụ Systems Manager được quản lý hoàn toàn bởi AWS. System manager cho phép bạn quản lý Amazon EC2 instances và các máy ảo on-premises (VMs)thông qua 1 browser-based shell. Session Manager cung cấp khả năng quản lý phiên bản an toàn và có thể kiểm tra mà không cần mở cổng vào, duy trì máy chủ bastion host hoặc quản lý khóa SSH.
+---
 
-+ First cloud journey [Lab](https://000058.awsstudygroup.com/1-introduce/) để hiểu sâu hơn về Session manager.
+### Tạo và Cấu hình Custom Rule
 
-1. Trong AWS Management Console, gõ Systems Manager trong ô tìm kiếm và nhấn Enter:
+#### Bước 1: Truy cập Web ACL và Tạo Rule Mới
 
-![system manager](/images/5-Workshop/5.3-S3-vpc/sm.png)
+Mở phần Web ACL, chọn tab Rules, sau đó click "Add rules" và chọn "Add my own rules and rule groups":
 
-2. Từ **Systems Manager** menu, tìm **Node Management** ở thanh bên trái và chọn **Session Manager**:
+![Tạo custom rule](/images/5-Workshop/5.3-S3-vpc/diagram47.png)
 
-![system manager](/images/5-Workshop/5.3-S3-vpc/sm1.png)
+#### Bước 2: Cấu hình Chi tiết Rule
 
-3. Click Start Session, và chọn EC2 instance tên **Test-Gateway-Endpoint**. 
-{{% notice info %}}
-Phiên bản EC2 này đã chạy trong "VPC cloud" và sẽ được dùng để kiểm tra khả năng kết nối với Amazon S3 thông qua điểm cuối Cổng mà bạn vừa tạo (s3-gwe). {{% /notice %}}
+Thiết lập thông tin cơ bản cho rule:
 
-![Start session](/images/5-Workshop/5.3-S3-vpc/start-session.png)
+![Cấu hình chi tiết rule](/images/5-Workshop/5.3-S3-vpc/diagram48.png)
 
-Session Manager sẽ mở browser tab mới với shell prompt: sh-4.2 $
+**Cấu hình Rule:**
+- **Rule type**: Rule builder (visual editor)
+- **Name**: path-block
+- **Type**: Regular rule (không phải rate-based)
 
-![Success](/images/5-Workshop/5.3-S3-vpc/start-session-success.png)
+#### Bước 3: Định nghĩa Statement
 
-Bạn đã bắt đầu phiên kết nối đến EC2 trong VPC Cloud thành công. Trong bước tiếp theo, chúng ta sẽ tạo một  S3 bucket và một tệp trong đó.
-#### Create a file and upload to s3 bucket
+Cấu hình điều kiện matching cho rule:
 
-1. Đổi về ssm-user's thư mục bằng lệnh "cd ~" 
+![Cấu hình statement](/images/5-Workshop/5.3-S3-vpc/diagram49.png)
 
-![Change user's dir](/images/5-Workshop/5.3-S3-vpc/cli1.png)
+**Cấu hình Statement:**
+- **If a request**: Matches the statement
+- **Inspect**: URI path
+- **Match type**: Starts with string
+- **String to match**: /includes
+- **Text transformation**: URL decode
 
-2. Tạo 1 file để kiểm tra bằng lệnh "fallocate -l 1G testfile.xyz", 1 file tên "testfile.xyz" có kích thước 1GB sẽ được tạo.
+**Lý do Text Transformation:**
+- URL decode transformation xử lý các ký tự đã encode
+- Ngăn chặn các nỗ lực bypass như `/inc%6Cudes` hoặc `/%69ncludes`
+- Đảm bảo bảo vệ toàn diện
 
-![Create file](/images/5-Workshop/5.3-S3-vpc/cli-file.png)
+#### Bước 4: Thiết lập Match Action
 
-3. Tải file mình vừa tạo lên S3 với lệnh "aws s3 cp testfile.xyz s3://your-bucket-name". Thay your-bucket-name bằng tên S3 bạn đã tạo.
+Định nghĩa action khi rule được kích hoạt:
 
-![Uploaded](/images/5-Workshop/5.3-S3-vpc/uploaded.png)
+![Thiết lập block action](/images/5-Workshop/5.3-S3-vpc/diagram50.png)
 
-Bạn đã tải thành công tệp lên bộ chứa S3 của mình. Bây giờ bạn có thể kết thúc session.
+**Cấu hình Action:**
+- **Action**: Block
+- **Response**: Default 403 Forbidden
+- Click "Add rule" ở cuối trang
 
-#### Kiểm tra object trong S3 bucket
+---
 
-1. Đi đến S3 console.  
-2. Click tên s3 bucket của bạn
-3. Trong Bucket console, bạn sẽ thấy tệp bạn đã tải lên S3 bucket của mình
+### Hoàn thành Cấu hình và Xác minh
 
-![Check S3](/images/5-Workshop/5.3-S3-vpc/check-s3-bucket.png)
+#### Thiết lập Rule Priority
 
-#### Tóm tắt
+Trên trang "Set rule priority", thiết lập priority cho custom rule:
 
-Chúc mừng bạn đã hoàn thành truy cập S3 từ VPC. Trong phần này, bạn đã tạo gateway endpoint cho Amazon S3 và sử dụng AWS CLI để tải file lên. Quá trình tải lên hoạt động vì gateway endpoint cho phép giao tiếp với S3 mà không cần Internet gateway gắn vào "VPC Cloud". Điều này thể hiện chức năng của gateway endpoint như một đường dẫn an toàn đến S3 mà không cần đi qua pub    lic Internet.
+![Thiết lập rule priority](/images/5-Workshop/5.3-S3-vpc/diagram51.png)
+
+**Cấu hình Priority:**
+- **path-block**: Priority sau managed rules (ví dụ: Priority 2)
+- **Lý do**: Managed rules đánh giá trước, custom rules sau
+- Click "Save" để hoàn thành
+
+#### Xác nhận Rule Đã Thêm
+
+Quay lại tab Rules và xác minh rule "path-block" đã được liệt kê thành công:
+
+![Xác nhận custom rule](/images/5-Workshop/5.3-S3-vpc/diagram52.png)
+
+**Trạng thái Web ACL:**
+- Total rules: 3 (Core Rule Set + SQL Database + path-block)
+- Custom rules: 1
+- path-block: Active, Priority 2
+
+---
+
+### Xác minh Hiệu quả Bảo vệ
+
+#### Kiểm thử Thủ công
+
+Thực hiện kiểm thử thủ công để xác nhận requests đến thư mục `/includes` trả về 403 Forbidden:
+
+```
+curl -I https://d1aty6dsjre298.cloudfront.net/includes/config.php
+```
+
+![Kết quả kiểm thử](/images/5-Workshop/5.3-S3-vpc/diagram53.png)
+
+**Kết quả Kiểm thử:**
+- **HTTP Status**: 403 Forbidden
+- **Server**: CloudFront
+- **x-cache**: Error from cloudfront (bị chặn trước origin)
+- **Protection**: Đang hoạt động
+
+#### Các Test Cases Bổ sung
+
+Kiểm thử encoded path:
+
+```
+curl -I https://d1aty6dsjre298.cloudfront.net/inc%6Cudes/config.php
+# Kỳ vọng: 403 Forbidden (URL decode bắt được)
+```
+
+Kiểm thử normal path:
+```
+curl -I https://d1aty6dsjre298.cloudfront.net/
+# Kỳ vọng: 200 OK (không bị ảnh hưởng)
+```
+
+---
+
+### Phân tích Kỹ thuật và Kết quả
+
+#### Thuật toán String Matching
+
+- **Prefix matching algorithm**: Kiểm tra URI path có bắt đầu bằng `/includes` không
+- **URL decoding transformation**: Xử lý ký tự đã encode để ngăn bypass
+- **Time complexity**: O(n) cho so sánh string với n là độ dài URI path
+- **Space complexity**: O(1) - không gian hằng số
+
+#### Quy trình Text Transformation
+
+1. **Input**: Raw URI path từ HTTP request
+2. **Transform**: URL decode (ví dụ: %6C → l)
+3. **Match**: So sánh path đã transform với `/includes`
+4. **Action**: Block nếu khớp
+
+#### Hiệu quả Bảo mật
+
+- ✅ **Truy cập trực tiếp**: Bị chặn (`/includes/config.php`)
+- ✅ **Encoded bypass**: Bị chặn (`/inc%6Cudes/config.php`)
+- ✅ **Case variations**: Bị chặn (URL decode chuẩn hóa)
+- ✅ **False positives**: Không có (đường dẫn hợp lệ không bị ảnh hưởng)
+
+#### Kết quả Đạt được
+
+- ✅ Bảo vệ thành công thư mục `/includes` khỏi truy cập bên ngoài
+- ✅ Ngăn chặn lộ thông tin nhạy cảm (file cấu hình, credentials)
+- ✅ Tăng cường bảo mật ứng dụng web tổng thể
+- ✅ Không ảnh hưởng đến chức năng ứng dụng hợp lệ
+
+#### Tác động Hiệu suất
+
+- **Latency**: < 1ms mỗi request (string matching)
+- **Capacity**: Sử dụng WCU tối thiểu
+- **Scalability**: Xử lý lượng request cao
+
+---
+
+### Tóm tắt
+
+**Thành tựu:**
+- ✅ Custom rule triển khai thành công để bảo vệ đường dẫn nhạy cảm
+- ✅ URL decoding ngăn chặn các nỗ lực bypass
+- ✅ Không có false positives với traffic hợp lệ
+- ✅ Tác động hiệu suất tối thiểu
+
+**Bước Tiếp theo:**
+- Giải quyết lỗ hổng bot traffic thông qua chiến lược bảo vệ bot toàn diện trong phần 4.3.3
